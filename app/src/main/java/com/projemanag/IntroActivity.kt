@@ -20,6 +20,11 @@ class IntroActivity : AppCompatActivity() {
             startActivity(Intent(this, SignUpActivity::class.java))
         }
 
+
+
+        // dfadfsad
+
+        //fad fad
         btn_sign_in_intro.setOnClickListener {
             startActivity(Intent(this, SignInActivity::class.java))
         }
