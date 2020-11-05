@@ -2,10 +2,10 @@ package com.projemanag.activities
 
 import android.content.Intent
 import android.graphics.Typeface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import com.projemanag.R
 import kotlinx.android.synthetic.main.activity_splash.*
 
@@ -26,9 +26,12 @@ class SplashActivity : AppCompatActivity() {
         tv_app_name.typeface = typeface
 
         // Need to go from this Activity to IntroActivity
-        Handler().postDelayed({
-            startActivity(Intent(this, IntroActivity::class.java))
-            finish()
-        }, 2500)
+        Handler().postDelayed(
+            {
+                startActivity(Intent(this, IntroActivity::class.java))
+                finish()
+            },
+            2500
+        )
     }
 }
