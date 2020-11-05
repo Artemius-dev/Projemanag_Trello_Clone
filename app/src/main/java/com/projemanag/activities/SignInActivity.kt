@@ -1,8 +1,8 @@
 package com.projemanag.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import com.projemanag.R
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
@@ -28,6 +28,5 @@ class SignInActivity : AppCompatActivity() {
         }
 
         toolbar_sign_in_activity.setNavigationOnClickListener { onBackPressed() }
-
     }
 }
