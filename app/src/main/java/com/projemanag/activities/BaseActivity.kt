@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.projemanag.R
 import kotlinx.android.synthetic.main.dialog_progress.*
 
-class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 
     private var doubleBackToExitPressedOnce = false
 
