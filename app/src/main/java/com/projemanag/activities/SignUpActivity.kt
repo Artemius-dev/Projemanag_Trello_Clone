@@ -7,6 +7,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.projemanag.R
+import com.projemanag.firebase.FirestoreClass
+import com.projemanag.models.User
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : BaseActivity() {
@@ -19,6 +21,21 @@ class SignUpActivity : BaseActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
+    }
+
+    fun userRegisteredSuccess() {
+
+        Toast.makeText(
+            this,
+            "you have " +
+                    "succesfully registerd the email " +
+                    "address",
+            Toast.LENGTH_LONG
+        ).show()
+        hideProgressDialog()
+
+        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 
     private fun setupActionBar() {
@@ -47,19 +64,12 @@ class SignUpActivity : BaseActivity() {
             FirebaseAuth.getInstance()
                 .createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-                    hideProgressDialog()
                     if (task.isSuccessful) {
                         val firebaseUser: FirebaseUser = task.result!!.user!!
                         val registeredEmail = firebaseUser.email!!
-                        Toast.makeText(
-                            this,
-                            "$name you have " +
-                                    "succesfully registerd the email " +
-                                    "address $registeredEmail",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        FirebaseAuth.getInstance().signOut()
-                        finish()
+                        val user = User(firebaseUser.uid, name, registeredEmail)
+
+                        FirestoreClass().registerUser(this, user)
                     } else {
                         Toast.makeText(
                             this,
