@@ -32,10 +32,9 @@ class SplashActivity : AppCompatActivity() {
 
                 var currentUserId = FirestoreClass().getCurrentUserId()
 
-                if(currentUserId.isNotEmpty()) {
+                if (currentUserId.isNotEmpty()) {
                     startActivity(Intent(this, MainActivity::class.java))
-                }
-                else {
+                } else {
                     startActivity(Intent(this, IntroActivity::class.java))
                 }
 
