@@ -28,8 +28,8 @@ class SignUpActivity : BaseActivity() {
         Toast.makeText(
             this,
             "you have " +
-                    "succesfully registerd the email " +
-                    "address",
+                "succesfully registerd the email " +
+                "address",
             Toast.LENGTH_LONG
         ).show()
         hideProgressDialog()
@@ -44,7 +44,7 @@ class SignUpActivity : BaseActivity() {
         val actionBar = supportActionBar
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_black_24dp)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
         }
 
         toolbar_sign_up_activity.setNavigationOnClickListener { onBackPressed() }

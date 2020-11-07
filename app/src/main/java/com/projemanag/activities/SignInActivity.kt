@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.projemanag.R
+import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.User
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
@@ -48,7 +49,7 @@ class SignInActivity : BaseActivity() {
         val actionBar = supportActionBar
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_black_24dp)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
         }
 
         toolbar_sign_in_activity.setNavigationOnClickListener { onBackPressed() }
@@ -58,7 +59,7 @@ class SignInActivity : BaseActivity() {
         val email: String = et_email_sign_in.text.toString().trim { it <= ' ' }
         val password: String = et_password_sign_in.text.toString().trim { it <= ' ' }
 
-        if(validateForm(email, password)) {
+        if (validateForm(email, password)) {
             showProgressDialog(resources.getString(R.string.please_wait))
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
@@ -67,14 +68,16 @@ class SignInActivity : BaseActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("Sign in", "signInWithEmail:success")
                         val user = auth.currentUser
-                        startActivity(Intent(this, MainActivity::class.java))
+                        FirestoreClass().signInUser(this)
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("Sign in", "signInWithEmail:failure", task.exception)
-                        Toast.makeText(baseContext, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            baseContext,
+                            "Authentication failed.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-
                 }
         }
     }
@@ -94,5 +97,4 @@ class SignInActivity : BaseActivity() {
             }
         }
     }
-
 }
