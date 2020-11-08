@@ -6,9 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
-import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,17 +17,11 @@ import com.projemanag.R
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.User
 import com.projemanag.utils.Constants
+import com.projemanag.utils.Constants.READ_STORAGE_PERMISSION_CODE
 import kotlinx.android.synthetic.main.activity_my_profile.*
-import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import java.io.IOException
 
 class MyProfileActivity : BaseActivity() {
-
-    companion object {
-        private const val READ_STORAGE_PERMISSION_CODE = 1
-        private const val PICK_IMAGE_REQUEST_CODE = 2
-    }
 
     private var mSelectedImageFileUri: Uri? = null
     private lateinit var mUserDetails: User
@@ -48,12 +40,12 @@ class MyProfileActivity : BaseActivity() {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED
             ) {
-                showImageChooser()
+                Constants.showImageChooser(this)
             } else {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    READ_STORAGE_PERMISSION_CODE
+                    Constants.READ_STORAGE_PERMISSION_CODE
                 )
             }
         }
@@ -78,31 +70,22 @@ class MyProfileActivity : BaseActivity() {
             if (grantResults.isNotEmpty() &&
                 grantResults[0] == PackageManager.PERMISSION_GRANTED
             ) {
-                showImageChooser()
+                Constants.showImageChooser(this)
             }
         } else {
             Toast.makeText(
                 this,
                 "Oops, you just denied the permission for storage. " +
-                    "You ca also allow it from settings.",
+                        "You ca also allow it from settings.",
                 Toast.LENGTH_LONG
             ).show()
         }
     }
 
-    private fun showImageChooser() {
-        var galleryIntent = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        )
-
-        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST_CODE)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK &&
-            requestCode == PICK_IMAGE_REQUEST_CODE &&
+            requestCode == Constants.PICK_IMAGE_REQUEST_CODE &&
             data!!.data != null
         ) {
             mSelectedImageFileUri = data.data
@@ -177,7 +160,7 @@ class MyProfileActivity : BaseActivity() {
             val sRef: StorageReference =
                 FirebaseStorage.getInstance().reference.child(
                     "USER_IMAGE" + System.currentTimeMillis() + "." +
-                        getFileExtension(mSelectedImageFileUri)
+                            Constants.getFileExtension(this, mSelectedImageFileUri)
                 )
 
             sRef.putFile(mSelectedImageFileUri!!).addOnSuccessListener { taskSnapshot ->
@@ -202,10 +185,6 @@ class MyProfileActivity : BaseActivity() {
                 hideProgressDialog()
             }
         }
-    }
-
-    private fun getFileExtension(uri: Uri?): String? {
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri!!))
     }
 
     fun profileUpdateSuccess() {
