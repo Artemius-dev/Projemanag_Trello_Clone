@@ -47,6 +47,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
     // JUnit and Espresso
     testImplementation 'junit:junit:4.13'
