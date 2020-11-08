@@ -24,4 +24,4 @@ jobs:
         uses: actions/checkout@v2
       
       - name: Ktlint checkout
-        uses: ./gradlew ktlintCheckout 
+        uses: bash ./gradlew ktlint
