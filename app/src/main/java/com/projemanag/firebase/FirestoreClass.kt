@@ -43,6 +43,7 @@ class FirestoreClass {
                     activity.javaClass.simpleName,
                 "Error while creating a board.",
                     exception
+
                 )
             }
     }
