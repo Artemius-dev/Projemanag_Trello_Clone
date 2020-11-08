@@ -1,4 +1,4 @@
-name: Android Pull Request & Master CI
+name: Ktlint Check and Format
 
 on:
   pull_request:
@@ -18,5 +18,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Ktlint
+      - name: Ktlint Check
         run: ./gradlew ktlintCheck
+        
+      - name: Ktlint Format
+        run: ./gradlew ktlintFormat
