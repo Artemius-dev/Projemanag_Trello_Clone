@@ -45,7 +45,7 @@ class MyProfileActivity : BaseActivity() {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    Constants.READ_STORAGE_PERMISSION_CODE
+                    READ_STORAGE_PERMISSION_CODE
                 )
             }
         }
@@ -76,7 +76,7 @@ class MyProfileActivity : BaseActivity() {
             Toast.makeText(
                 this,
                 "Oops, you just denied the permission for storage. " +
-                        "You ca also allow it from settings.",
+                    "You ca also allow it from settings.",
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -160,12 +160,12 @@ class MyProfileActivity : BaseActivity() {
             val sRef: StorageReference =
                 FirebaseStorage.getInstance().reference.child(
                     "USER_IMAGE" + System.currentTimeMillis() + "." +
-                            Constants.getFileExtension(this, mSelectedImageFileUri)
+                        Constants.getFileExtension(this, mSelectedImageFileUri)
                 )
 
             sRef.putFile(mSelectedImageFileUri!!).addOnSuccessListener { taskSnapshot ->
                 Log.e(
-                    "Firebase Imgage URL",
+                    "Firebase Image URL",
                     taskSnapshot.metadata!!.reference!!.downloadUrl.toString()
                 )
 

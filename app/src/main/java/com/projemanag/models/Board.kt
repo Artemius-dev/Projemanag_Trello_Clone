@@ -3,17 +3,19 @@ package com.projemanag.models
 import android.os.Parcel
 import android.os.Parcelable
 
-data class Board (
+data class Board(
     val name: String = "",
     val image: String = "",
     val createdBy: String = "",
-    val assignedTo: ArrayList<String> = ArrayList()
-): Parcelable {
+    val assignedTo: ArrayList<String> = ArrayList(),
+    var documentId: String = ""
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.createStringArrayList()!!
+        parcel.createStringArrayList()!!,
+        parcel.readString()!!
     ) {
     }
 
@@ -22,6 +24,7 @@ data class Board (
         parcel.writeString(image)
         parcel.writeString(createdBy)
         parcel.writeStringList(assignedTo)
+        parcel.writeString(documentId)
     }
 
     override fun describeContents(): Int {
