@@ -15,7 +15,7 @@ open class BoardItemsAdapter(
     private var list: ArrayList<Board>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var onClickListener: OnClickLListener? = null
+    private var onClickListener: OnClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(
@@ -35,7 +35,7 @@ open class BoardItemsAdapter(
                 .into(holder.itemView.iv_board_image)
 
             holder.itemView.tv_name.text = model.name
-            holder.itemView.tv_created_by.text = "Created by: ${model.createdBy}"
+            holder.itemView.tv_created_by.text = "Created By : ${model.createdBy}"
 
             holder.itemView.setOnClickListener {
                 if (onClickListener != null) {
@@ -45,11 +45,11 @@ open class BoardItemsAdapter(
         }
     }
 
-    interface OnClickLListener {
+    interface OnClickListener {
         fun onClick(position: Int, model: Board)
     }
 
-    fun setOnClickListener(onClickLListener: OnClickLListener) {
+    fun setOnClickListener(onClickListener: OnClickListener) {
         this.onClickListener = onClickListener
     }
 

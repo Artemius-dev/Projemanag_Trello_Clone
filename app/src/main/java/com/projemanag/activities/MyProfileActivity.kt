@@ -110,7 +110,7 @@ class MyProfileActivity : BaseActivity() {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
-            actionBar.title = resources.getString(R.string.my_profile_title)
+            actionBar.title = resources.getString(R.string.nav_my_profile)
         }
 
         toolbar_my_profile_activity.setNavigationOnClickListener { onBackPressed() }

@@ -11,6 +11,7 @@ import com.projemanag.activities.MainActivity
 import com.projemanag.activities.MyProfileActivity
 import com.projemanag.activities.SignInActivity
 import com.projemanag.activities.SignUpActivity
+import com.projemanag.activities.TaskListActivity
 import com.projemanag.models.Board
 import com.projemanag.models.User
 import com.projemanag.utils.Constants
@@ -27,6 +28,22 @@ class FirestoreClass {
                 activity.userRegisteredSuccess()
             }.addOnFailureListener { e ->
                 Log.e(activity.javaClass.simpleName, "Error writing document", e)
+            }
+    }
+
+    fun getBoardDetails(activity: TaskListActivity, documentId: String) {
+        mFireStore.collection(Constants.BOARDS)
+            .document(documentId)
+            .get()
+            .addOnSuccessListener {
+                document ->
+                Log.i(activity.javaClass.simpleName, document.toString())
+
+                activity.boardDetails(document.toObject(Board::class.java)!!)
+            }.addOnFailureListener { e ->
+
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while creating a board", e)
             }
     }
 
