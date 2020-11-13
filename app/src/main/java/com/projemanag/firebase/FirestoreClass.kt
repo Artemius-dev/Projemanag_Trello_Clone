@@ -6,7 +6,13 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.projemanag.activities.*
+import com.projemanag.activities.CreateBoardActivity
+import com.projemanag.activities.MainActivity
+import com.projemanag.activities.MembersActivity
+import com.projemanag.activities.MyProfileActivity
+import com.projemanag.activities.SignInActivity
+import com.projemanag.activities.SignUpActivity
+import com.projemanag.activities.TaskListActivity
 import com.projemanag.models.Board
 import com.projemanag.models.User
 import com.projemanag.utils.Constants
@@ -190,9 +196,9 @@ class FirestoreClass {
                 document ->
                 Log.e(activity.javaClass.simpleName, document.documents.toString())
 
-                val usersList : ArrayList<User> = ArrayList()
+                val usersList: ArrayList<User> = ArrayList()
 
-                for(i in document.documents) {
+                for (i in document.documents) {
                     val user = i.toObject(User::class.java)!!
                     usersList.add(user)
                 }
@@ -214,7 +220,7 @@ class FirestoreClass {
             .get()
             .addOnSuccessListener {
                 document ->
-                if(document.documents.size > 0) {
+                if (document.documents.size > 0) {
                     val user = document.documents[0].toObject(User::class.java)!!
                     activity.memberDetails(user)
                 } else {
@@ -245,5 +251,4 @@ class FirestoreClass {
                 Log.e(activity.javaClass.simpleName, "Error while creating a board.", e)
             }
     }
-
 }
