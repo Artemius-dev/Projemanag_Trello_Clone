@@ -36,7 +36,7 @@ class TaskListActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK && resultCode == MEMBERS_REQUEST_CODE) {
+        if (resultCode == Activity.RESULT_OK && resultCode == MEMBERS_REQUEST_CODE) {
             showProgressDialog(resources.getString(R.string.please_wait))
             FirestoreClass().getBoardDetails(this, mBoardDocumentId)
         } else {
@@ -47,6 +47,10 @@ class TaskListActivity : BaseActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_members, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    fun cardDetails(taskListPosition: Int, cardPosition: Int) {
+        startActivity(Intent(this, CardDetailsActivity::class.java))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -159,7 +163,6 @@ class TaskListActivity : BaseActivity() {
     }
 
     companion object {
-        const val MEMBERS_REQUEST_CODE : Int = 13
+        const val MEMBERS_REQUEST_CODE: Int = 13
     }
-
 }

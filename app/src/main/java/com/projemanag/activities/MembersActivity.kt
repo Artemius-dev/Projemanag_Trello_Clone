@@ -109,7 +109,7 @@ class MembersActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if(anyChangesMade) {
+        if (anyChangesMade) {
             setResult(Activity.RESULT_OK)
         }
         super.onBackPressed()
