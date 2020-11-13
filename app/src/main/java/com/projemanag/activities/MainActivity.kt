@@ -64,14 +64,15 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             val adapter = BoardItemsAdapter(this, boardsList)
             rv_boards_list.adapter = adapter
 
-            adapter.setOnClickListener(object: BoardItemsAdapter.OnClickListener{
-                override fun onClick(position: Int, model: Board) {
-                    val intent = Intent(this@MainActivity, TaskListActivity::class.java)
-                    intent.putExtra(Constants.DOCUMENT_ID, model.documentId)
-                    startActivity(intent)
+            adapter.setOnClickListener(
+                object : BoardItemsAdapter.OnClickListener {
+                    override fun onClick(position: Int, model: Board) {
+                        val intent = Intent(this@MainActivity, TaskListActivity::class.java)
+                        intent.putExtra(Constants.DOCUMENT_ID, model.documentId)
+                        startActivity(intent)
+                    }
                 }
-            })
-
+            )
         } else {
             rv_boards_list.visibility = View.GONE
             tv_no_boards_available.visibility = View.VISIBLE
@@ -128,12 +129,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             requestCode == MY_PROFILE_REQUEST_CODE
         ) {
             FirestoreClass().loadUserData(this)
-        } else if(resultCode == Activity.RESULT_OK &&
-            requestCode == CREATE_BOARD_REQUESTT_CODE) {
+        } else if (resultCode == Activity.RESULT_OK &&
+            requestCode == CREATE_BOARD_REQUESTT_CODE
+        ) {
             FirestoreClass().getBoardsList(this)
-        }
-
-        else {
+        } else {
             Log.e("Cancelled", "Cancelled")
         }
     }
