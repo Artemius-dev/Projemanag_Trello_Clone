@@ -49,7 +49,7 @@ open class CardListItemsAdapter(
 
         if (holder is MyViewHolder) {
 
-            if(model.labelColor.isNotEmpty()) {
+            if (model.labelColor.isNotEmpty()) {
                 holder.itemView.view_label_color.visibility = View.VISIBLE
                 holder.itemView.view_label_color
                     .setBackgroundColor(Color.parseColor(model.labelColor))
