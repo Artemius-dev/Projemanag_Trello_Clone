@@ -14,7 +14,6 @@ abstract class LabelColorListDialog(
     private var list: ArrayList<String>,
     private val title: String = "",
     private var mSelectedColor: String = ""
-
 ) : Dialog(context) {
 
     private var adapter: LabelColorListItemsAdapter? = null

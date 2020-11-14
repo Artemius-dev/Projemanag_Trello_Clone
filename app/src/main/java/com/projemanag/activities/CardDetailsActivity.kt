@@ -2,11 +2,14 @@ package com.projemanag.activities
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.projemanag.R
+import com.projemanag.adapters.LabelColorListItemsAdapter
+import com.projemanag.dialogs.LabelColorListDialog
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.Board
 import com.projemanag.models.Card
@@ -20,6 +23,7 @@ class CardDetailsActivity : BaseActivity() {
     private lateinit var mBoardDetails: Board
     private var mTaskListPosition = -1
     private var mCardPosition = -1
+    private var mSelectedColor = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +39,11 @@ class CardDetailsActivity : BaseActivity() {
         )
         et_name_card_details.setSelection(et_name_card_details.text.toString().length)
 
+        mSelectedColor = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].labelColor
+        if(mSelectedColor.isNotEmpty()) {
+            setColor()
+        }
+
         btn_update_card_details.setOnClickListener {
             if (et_name_card_details.text.toString().isNotEmpty())
                 updateCardDetails()
@@ -46,6 +55,11 @@ class CardDetailsActivity : BaseActivity() {
                 ).show()
             }
         }
+
+        tv_select_label_color.setOnClickListener {
+            labelColorsListDialog()
+        }
+
     }
 
     fun addUpdateTaskListSuccess() {
@@ -73,6 +87,23 @@ class CardDetailsActivity : BaseActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_delete_card, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun colorsList(): ArrayList<String> {
+        val colorsList: ArrayList<String> = ArrayList()
+        colorsList.add("#43C86F")
+        colorsList.add("#0C90F1")
+        colorsList.add("#F72400")
+        colorsList.add("#7A8089")
+        colorsList.add("#D57C1D")
+        colorsList.add("#770000")
+        colorsList.add("#0022F8")
+        return colorsList
+    }
+
+    private fun setColor() {
+        tv_select_label_color.text = ""
+        tv_select_label_color.setBackgroundColor(Color.parseColor(mSelectedColor))
     }
 
     private fun getIntentData() {
@@ -104,7 +135,8 @@ class CardDetailsActivity : BaseActivity() {
         val card = Card(
             et_name_card_details.text.toString(),
             mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].createdBy,
-            mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].assignedTo
+            mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].assignedTo,
+            mSelectedColor
         )
 
         mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition] = card
@@ -157,4 +189,21 @@ class CardDetailsActivity : BaseActivity() {
         alertDialog.setCancelable(false) // Will not allow user to cancel after
         alertDialog.show() // show the dialog to UI
     }
+
+    private fun labelColorsListDialog() {
+        val colorsList: ArrayList<String> = colorsList()
+
+        val listDialog = object : LabelColorListDialog(
+            this,
+            colorsList,
+            resources.getString(R.string.str_select_label_color),
+            mSelectedColor) {
+            override fun onItemSelected(color: String) {
+                mSelectedColor = color
+                setColor()
+            }
+        }
+        listDialog.show()
+    }
+
 }
