@@ -23,7 +23,9 @@ abstract class LabelColorListDialog(
         super.onCreate(savedInstanceState)
 
         val view = LayoutInflater.from(context).inflate(
-            R.layout.dialog_list, null)
+            R.layout.dialog_list,
+            null
+        )
 
         setContentView(view)
         setCanceledOnTouchOutside(true)
@@ -43,10 +45,8 @@ abstract class LabelColorListDialog(
                     dismiss()
                     onItemSelected(color)
                 }
-
             }
     }
 
     protected abstract fun onItemSelected(color: String)
-
 }
