@@ -81,7 +81,6 @@ open class TaskListItemsAdapter(
                 }
             }
 
-
             holder.itemView.ib_edit_list_name.setOnClickListener {
                 holder.itemView.et_edit_task_list_name.setText(model.title)
                 holder.itemView.ll_title_view.visibility = View.GONE
@@ -156,13 +155,16 @@ open class TaskListItemsAdapter(
                 }
             )
 
-            val dividerItemDecoration = DividerItemDecoration(context,
-                DividerItemDecoration.VERTICAL)
+            val dividerItemDecoration = DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
             holder.itemView.rv_card_list.addItemDecoration(dividerItemDecoration)
 
             val helper = ItemTouchHelper(
                 object : ItemTouchHelper.SimpleCallback(
-                    ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
+                    ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                    0
                 ) {
                     override fun onMove(
                         recyclerView: RecyclerView,
@@ -172,12 +174,15 @@ open class TaskListItemsAdapter(
                         val draggedPosition = dragged.adapterPosition
                         val targetPosition = target.adapterPosition
 
-                        if(mPositionDraggedFrom == -1) {
+                        if (mPositionDraggedFrom == -1) {
                             mPositionDraggedFrom = draggedPosition
                         }
                         mPositionDraggedTo = targetPosition
-                        Collections.swap(list[position].cards,
-                            draggedPosition, targetPosition)
+                        Collections.swap(
+                            list[position].cards,
+                            draggedPosition,
+                            targetPosition
+                        )
                         adapter.notifyItemMoved(draggedPosition, targetPosition)
                         return false
                     }
@@ -190,8 +195,9 @@ open class TaskListItemsAdapter(
                         viewHolder: RecyclerView.ViewHolder
                     ) {
                         super.clearView(recyclerView, viewHolder)
-                        if(mPositionDraggedFrom != -1 && mPositionDraggedTo != -1 &&
-                            mPositionDraggedFrom != mPositionDraggedTo) {
+                        if (mPositionDraggedFrom != -1 && mPositionDraggedTo != -1 &&
+                            mPositionDraggedFrom != mPositionDraggedTo
+                        ) {
                             (context as TaskListActivity).updateCardsInTaskList(
                                 position,
                                 list[position].cards
@@ -201,12 +207,10 @@ open class TaskListItemsAdapter(
                         mPositionDraggedFrom = -1
                         mPositionDraggedTo = -1
                     }
-
                 }
             )
 
             helper.attachToRecyclerView(holder.itemView.rv_card_list)
-
         }
     }
 
