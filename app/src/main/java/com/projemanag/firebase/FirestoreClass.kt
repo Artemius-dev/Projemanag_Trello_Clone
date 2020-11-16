@@ -210,14 +210,14 @@ class FirestoreClass {
                     usersList.add(user)
                 }
 
-                if(activity is MembersActivity)
+                if (activity is MembersActivity)
                     activity.setupMembersList(usersList)
-                else if(activity is TaskListActivity)
+                else if (activity is TaskListActivity)
                     activity.boardMembersDetailsList(usersList)
             }.addOnFailureListener { e ->
-                if(activity is MembersActivity)
+                if (activity is MembersActivity)
                     activity.hideProgressDialog()
-                else if(activity is TaskListActivity)
+                else if (activity is TaskListActivity)
                     activity.hideProgressDialog()
                 Log.e(
                     activity.javaClass.simpleName,

@@ -59,22 +59,21 @@ open class MemberListItemsAdapter(
             holder.itemView.tv_member_name.text = model.name
             holder.itemView.tv_member_email.text = model.email
 
-            if(model.selected) {
+            if (model.selected) {
                 holder.itemView.iv_selected_member.visibility = View.VISIBLE
             } else {
                 holder.itemView.iv_selected_member.visibility = View.GONE
             }
 
             holder.itemView.setOnClickListener {
-                if(onClickListener != null) {
-                    if(model.selected) {
+                if (onClickListener != null) {
+                    if (model.selected) {
                         onClickListener!!.onClick(position, model, Constants.UN_SELECT)
                     } else {
                         onClickListener!!.onClick(position, model, Constants.SELECT)
                     }
                 }
             }
-
         }
     }
 

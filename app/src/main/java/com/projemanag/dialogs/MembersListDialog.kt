@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.projemanag.R
-import com.projemanag.adapters.LabelColorListItemsAdapter
 import com.projemanag.adapters.MemberListItemsAdapter
 import com.projemanag.models.User
 import kotlinx.android.synthetic.main.dialog_list.view.*
@@ -36,7 +35,7 @@ abstract class MembersListDialog(
     private fun setUpRecyclerView(view: View) {
         view.tvTitle.text = title
 
-        if(list.size > 0) {
+        if (list.size > 0) {
 
             view.rvList.layoutManager = LinearLayoutManager(context)
             adapter = MemberListItemsAdapter(context, list)
@@ -48,7 +47,8 @@ abstract class MembersListDialog(
                         dismiss()
                         onItemSelected(user, action)
                     }
-                })
+                }
+            )
         }
     }
 
