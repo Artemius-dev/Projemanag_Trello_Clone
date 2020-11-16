@@ -24,7 +24,7 @@ class FirestoreClass {
 
     fun registerUser(activity: SignUpActivity, userInfo: User) {
         mFireStore.collection(Constants.USERS)
-            .document(getCurrentUserId())
+            .document(getCurrentUserID())
             .set(userInfo, SetOptions.merge())
             .addOnSuccessListener {
                 activity.userRegisteredSuccess()
@@ -77,7 +77,7 @@ class FirestoreClass {
 
     fun getBoardsList(activity: MainActivity) {
         mFireStore.collection(Constants.BOARDS)
-            .whereArrayContains(Constants.ASSIGNED_TO, getCurrentUserId())
+            .whereArrayContains(Constants.ASSIGNED_TO, getCurrentUserID())
             .get()
             .addOnSuccessListener {
                 document ->
@@ -122,11 +122,11 @@ class FirestoreClass {
     }
 
     fun updateUserProfileData(
-        activity: MyProfileActivity,
+        activity: Activity,
         userHashMap: HashMap<String, Any>
     ) {
         mFireStore.collection(Constants.USERS)
-            .document(getCurrentUserId())
+            .document(getCurrentUserID())
             .update(userHashMap)
             .addOnSuccessListener {
                 Log.i(activity.javaClass.simpleName, "Profile Data updated successfully!")
@@ -134,12 +134,26 @@ class FirestoreClass {
                     activity,
                     "Profile Data updated successfully!",
                     Toast.LENGTH_SHORT
-                )
-                    .show()
-                activity.profileUpdateSuccess()
+                ).show()
+                when (activity) {
+                    is MainActivity -> {
+                        activity.tokenUpdateSuccess()
+                    }
+                    is MyProfileActivity -> {
+                        activity.profileUpdateSuccess()
+                    }
+                }
             }.addOnFailureListener {
                 e ->
-                activity.hideProgressDialog()
+                when (activity) {
+                    is MainActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is MyProfileActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+
                 Log.e(
                     activity.javaClass.simpleName,
                     "Error while creating a board.",
@@ -156,7 +170,7 @@ class FirestoreClass {
 
     fun loadUserData(activity: Activity, readBoardsList: Boolean = false) {
         mFireStore.collection(Constants.USERS)
-            .document(getCurrentUserId())
+            .document(getCurrentUserID())
             .get()
             .addOnSuccessListener { document ->
                 val loggedInUser = document.toObject(User::class.java)!!
@@ -185,7 +199,7 @@ class FirestoreClass {
             }
     }
 
-    fun getCurrentUserId(): String {
+    fun getCurrentUserID(): String {
 
         var currentUser = FirebaseAuth.getInstance().currentUser
         var currentUserId = ""

@@ -108,7 +108,7 @@ class TaskListActivity : BaseActivity() {
     }
 
     fun createTaskList(taskListName: String) {
-        val task = Task(taskListName, FirestoreClass().getCurrentUserId())
+        val task = Task(taskListName, FirestoreClass().getCurrentUserID())
         mBoardDetails.taskList.add(0, task)
         mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
 
@@ -141,9 +141,9 @@ class TaskListActivity : BaseActivity() {
         mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
 
         val cardAssignedUsersList: ArrayList<String> = ArrayList()
-        cardAssignedUsersList.add(FirestoreClass().getCurrentUserId())
+        cardAssignedUsersList.add(FirestoreClass().getCurrentUserID())
 
-        val card = Card(cardName, FirestoreClass().getCurrentUserId(), cardAssignedUsersList)
+        val card = Card(cardName, FirestoreClass().getCurrentUserID(), cardAssignedUsersList)
 
         val cardList = mBoardDetails.taskList[position].cards
         cardList.add(card)
