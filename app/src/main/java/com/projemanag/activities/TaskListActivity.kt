@@ -15,7 +15,6 @@ import com.projemanag.models.Card
 import com.projemanag.models.Task
 import com.projemanag.models.User
 import com.projemanag.utils.Constants
-import kotlinx.android.synthetic.main.activity_my_profile.*
 import kotlinx.android.synthetic.main.activity_task_list.*
 
 class TaskListActivity : BaseActivity() {
@@ -55,7 +54,7 @@ class TaskListActivity : BaseActivity() {
         val intent = Intent(this, CardDetailsActivity::class.java)
         intent.putExtra(Constants.BOARD_DETAIL, mBoardDetails)
         intent.putExtra(Constants.TASK_LIST_ITEM_POSITION, taskListPosition)
-        intent.putExtra(Constants.CARD_LIST_ITEM_POSITiON, cardPosition)
+        intent.putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
         intent.putExtra(Constants.BOARD_MEMBERS_LIST, mAssignedMemberDetailList)
         startActivityForResult(intent, CARD_DETAILS_REQUEST_CODE)
     }
@@ -179,6 +178,15 @@ class TaskListActivity : BaseActivity() {
 
         val adapter = TaskListItemsAdapter(this, mBoardDetails.taskList)
         rv_task_list.adapter = adapter
+    }
+
+    fun updateCardsInTaskList(taskListPosition: Int, cards: ArrayList<Card>) {
+        mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
+
+        mBoardDetails.taskList[taskListPosition].cards = cards
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().addUpdateTaskList(this, mBoardDetails)
     }
 
     companion object {

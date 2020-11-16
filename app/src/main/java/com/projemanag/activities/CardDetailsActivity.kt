@@ -23,7 +23,8 @@ import com.projemanag.models.User
 import com.projemanag.utils.Constants
 import kotlinx.android.synthetic.main.activity_card_details.*
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 import kotlin.collections.ArrayList
 
 class CardDetailsActivity : BaseActivity() {
@@ -142,8 +143,8 @@ class CardDetailsActivity : BaseActivity() {
         if (intent.hasExtra(Constants.TASK_LIST_ITEM_POSITION)) {
             mTaskListPosition = intent.getIntExtra(Constants.TASK_LIST_ITEM_POSITION, -1)
         }
-        if (intent.hasExtra(Constants.CARD_LIST_ITEM_POSITiON)) {
-            mCardPosition = intent.getIntExtra(Constants.CARD_LIST_ITEM_POSITiON, -1)
+        if (intent.hasExtra(Constants.CARD_LIST_ITEM_POSITION)) {
+            mCardPosition = intent.getIntExtra(Constants.CARD_LIST_ITEM_POSITION, -1)
         }
         if (intent.hasExtra(Constants.BOARD_MEMBERS_LIST)) {
             mMembersDetailList = intent.getParcelableArrayListExtra(Constants.BOARD_MEMBERS_LIST)
