@@ -40,7 +40,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.d(TAG, "Refreshed token: ${token}")
+        Log.d(TAG, "Refreshed token: $token")
         sendRegistrationToServer(token)
     }
 
@@ -56,17 +56,22 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             Intent(this, SignInActivity::class.java)
         }
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_NEW_TASK or
                 Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                Intent.FLAG_ACTIVITY_CLEAR_TOP
+        )
         val pendingIntent = PendingIntent.getActivity(
             this,
-            0, intent, PendingIntent.FLAG_ONE_SHOT
+            0,
+            intent,
+            PendingIntent.FLAG_ONE_SHOT
         )
         val channelId = this.resources.getString(R.string.default_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(
-            this, channelId
+            this,
+            channelId
         ).setSmallIcon(R.drawable.ic_stat_ic_notification)
             .setContentTitle(title)
             .setContentText(message)
@@ -92,5 +97,4 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         private const val TAG = "MyFirebaseMsgService"
     }
-
 }

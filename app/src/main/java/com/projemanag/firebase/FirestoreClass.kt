@@ -135,7 +135,7 @@ class FirestoreClass {
                     "Profile Data updated successfully!",
                     Toast.LENGTH_SHORT
                 ).show()
-                when(activity) {
+                when (activity) {
                     is MainActivity -> {
                         activity.tokenUpdateSuccess()
                     }
@@ -145,7 +145,7 @@ class FirestoreClass {
                 }
             }.addOnFailureListener {
                 e ->
-                when(activity) {
+                when (activity) {
                     is MainActivity -> {
                         activity.hideProgressDialog()
                     }

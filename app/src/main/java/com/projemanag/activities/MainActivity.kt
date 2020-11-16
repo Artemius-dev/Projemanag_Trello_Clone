@@ -44,17 +44,19 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         nav_view.setNavigationItemSelectedListener(this)
 
         mSharedPraferences = this.getSharedPreferences(
-            Constants.PROGEMANAG_PREFERENCES, Context.MODE_PRIVATE)
+            Constants.PROGEMANAG_PREFERENCES,
+            Context.MODE_PRIVATE
+        )
 
         val tokenUpdated = mSharedPraferences
             .getBoolean(Constants.FCM_TOKEN_UPDATED, false)
 
-        if(tokenUpdated) {
+        if (tokenUpdated) {
             showProgressDialog(resources.getString(R.string.please_wait))
             FirestoreClass().loadUserData(this, true)
         } else {
             FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(this@MainActivity) {
-                    instanceIdResult ->
+                instanceIdResult ->
                 updateFCMToken(instanceIdResult.token)
             }
         }
@@ -69,9 +71,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             intent.putExtra(Constants.NAME, mUserName)
             startActivityForResult(intent, CREATE_BOARD_REQUESTT_CODE)
         }
-
-
-
     }
 
     fun populateBoardsListToUI(boardsList: ArrayList<Board>) {
@@ -201,7 +200,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun updateFCMToken(token: String) {
-        val userHashMap  = HashMap<String, Any>()
+        val userHashMap = HashMap<String, Any>()
         userHashMap[Constants.FCM_TOKEN] = token
         showProgressDialog(resources.getString(R.string.please_wait))
         FirestoreClass().updateUserProfileData(this, userHashMap)
