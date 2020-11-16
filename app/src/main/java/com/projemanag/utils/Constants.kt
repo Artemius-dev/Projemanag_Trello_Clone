@@ -28,7 +28,7 @@ object Constants {
     const val UN_SELECT: String = "UnSelect"
 
     const val TASK_LIST_ITEM_POSITION: String = "task_list_item_position"
-    const val CARD_LIST_ITEM_POSITiON: String = "card_list_item_position"
+    const val CARD_LIST_ITEM_POSITION: String = "card_list_item_position"
 
     fun showImageChooser(activity: Activity) {
         var galleryIntent = Intent(
