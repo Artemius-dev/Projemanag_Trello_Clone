@@ -15,9 +15,6 @@ import org.hamcrest.CoreMatchers.anyOf
 import org.hamcrest.CoreMatchers.startsWith
 import org.hamcrest.Matcher
 
-/**
- * Single place for all the [ConditionWatcher] functions used in sample project.
- */
 object ConditionWatchers {
 
     private val TIMEOUT_LIMIT = 20000
@@ -29,10 +26,6 @@ object ConditionWatchers {
         ConditionWatcher.setWatchInterval(400)
     }
 
-    /**
-     * Waits until the [] finishes search query.
-     * Check if expectedAmountOfResults is shown.
-     */
     @Throws(Exception::class)
     @JvmStatic
     fun snackbarGone() {
@@ -54,12 +47,6 @@ object ConditionWatchers {
         })
     }
 
-    /**
-     * Waits for a [View], located by [ViewInteraction], to be displayed on the screen.
-     *
-     * @param interaction - [ViewInteraction] that locatea a view.
-     * @param timeout - amount of time in milliseconds to wait for condition.
-     */
     @Throws(Exception::class)
     @JvmStatic
     fun waitForElement(
@@ -85,12 +72,6 @@ object ConditionWatchers {
         return interaction
     }
 
-    /**
-     * Waits for a [View], located by [ViewInteraction] to be fully visible on the screen.
-     *
-     * @param interaction - [ViewInteraction] that locates a view.
-     * @param timeout - amount of time in milliseconds to wait for condition.
-     */
     @Throws(Exception::class)
     fun waitForElementFullyVisible(
             interaction: ViewInteraction,
@@ -115,13 +96,6 @@ object ConditionWatchers {
         return interaction
     }
 
-    /**
-     * Waits for a [View], located by [ViewInteraction], to be gone.
-     *
-     * @param interaction - [ViewInteraction] that locates a view.
-     * @param timeout - amount of time in milliseconds to wait for condition.
-     * @return [ViewInteraction] for located view.
-     */
     @Throws(Exception::class)
     @JvmStatic
     fun waitForElementIsGone(
@@ -147,12 +121,6 @@ object ConditionWatchers {
         return interaction
     }
 
-    /**
-     * Waits for [View], located by Matcher<View> to be gone.
-     *
-     * @param viewMatcher - Matcher<View> that locates a view.
-     * @param timeout - amount of time in milliseconds to wait for condition.
-     */
     @Throws(Exception::class)
     @JvmStatic
     fun waitForElementIsGone(
@@ -177,13 +145,6 @@ object ConditionWatchers {
         })
     }
 
-    /**
-     * Waits for View, located by Matcher<View>, to be gone.
-     *
-     * @param interaction - Matcher<View> that locates a view.
-     * @param timeout - amount of time in milliseconds to wait for condition.
-     * @return usually ViewInteraction of the parent of the view that should be gone.
-     */
     @Throws(Exception::class)
     fun waitForElementIsGone(
             interaction: ViewInteraction,
