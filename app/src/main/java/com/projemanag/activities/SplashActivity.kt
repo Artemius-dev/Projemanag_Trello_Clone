@@ -8,9 +8,12 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.projemanag.R
 import com.projemanag.firebase.FirestoreClass
+import com.projemanag.utils.EspressoIdlingResource
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
+
+    var currentUserId = FirestoreClass().getCurrentUserID()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +32,6 @@ class SplashActivity : AppCompatActivity() {
         // Need to go from this Activity to IntroActivity
         Handler().postDelayed(
             {
-
-                var currentUserId = FirestoreClass().getCurrentUserID()
 
                 if (currentUserId.isNotEmpty()) {
                     startActivity(Intent(this, MainActivity::class.java))
