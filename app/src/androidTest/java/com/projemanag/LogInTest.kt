@@ -11,17 +11,17 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.google.firebase.auth.FirebaseAuth
 import com.projemanag.activities.SplashActivity
 import com.projemanag.conditionwatcher.ConditionWatchers.waitForElement
 import com.projemanag.firebase.FirestoreClass
-import com.projemanag.firebase.IFirestoreClass
 import com.projemanag.matchers.ToastMatcher
+import com.projemanag.mockwebserver.MockServer
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.verify
+import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.anyOf
 import org.hamcrest.CoreMatchers.not
@@ -31,7 +31,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
-
+import org.koin.android.ext.android.inject
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class LogInTest() : BaseTest() {

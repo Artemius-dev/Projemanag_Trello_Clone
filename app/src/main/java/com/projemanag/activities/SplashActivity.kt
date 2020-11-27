@@ -7,13 +7,13 @@ import android.os.Handler
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.projemanag.R
-import com.projemanag.firebase.FirestoreClass
-import com.projemanag.utils.EspressoIdlingResource
+import com.projemanag.firebase.FirestoreValues
 import kotlinx.android.synthetic.main.activity_splash.*
+import org.koin.android.ext.android.inject
 
 class SplashActivity : AppCompatActivity() {
 
-    var currentUserId = FirestoreClass().getCurrentUserID()
+    private val currentUser : FirestoreValues by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,7 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed(
             {
 
-                if (currentUserId.isNotEmpty()) {
+                if (currentUser.currentUserId.isNotEmpty()) {
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     startActivity(Intent(this, IntroActivity::class.java))

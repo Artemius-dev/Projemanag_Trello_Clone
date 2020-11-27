@@ -79,6 +79,26 @@ dependencies {
         exclude group: 'org.jetbrains.kotlin' // Only if you already use Kotlin in your project
     }
 
-    // MockWebServer
+    // Mockk
     androidTestImplementation "io.mockk:mockk-android:1.10.2"
+
+    // Mockito
+
+    // Mock Web Server
+    androidTestImplementation 'io.fabric8:mockwebserver:0.1.0'
+
+
+    def koin_version = "2.2.1"
+    def kakao_version = "2.4.0"
+
+    // Koin
+    implementation "org.koin:koin-core:$koin_version"
+    implementation "org.koin:koin-android:$koin_version"
+    testImplementation "org.koin:koin-test:$koin_version"
+    androidTestImplementation "org.koin:koin-test:$koin_version"
+
+    // Kakao
+    androidTestImplementation "com.agoda.kakao:kakao:$kakao_version"
+
 }
+

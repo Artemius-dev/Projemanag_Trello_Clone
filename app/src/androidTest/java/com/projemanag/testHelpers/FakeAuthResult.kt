@@ -8,9 +8,10 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.OAuthProvider
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.Test
 
 class FakeAuthResult  // Singleton
-private constructor() : AuthResult {
+    () : AuthResult {
     private var mUser: FirebaseUser? = null
 
     override fun describeContents(): Int {
@@ -47,6 +48,10 @@ private constructor() : AuthResult {
         every { user.displayName } returns TestConstants.NAME
         every { user.photoUrl } returns TestConstants.PHOTO_URI
         return user
+    }
+    
+    fun getCurrentUserID() : String {
+        return TestConstants.UID
     }
 
 }
