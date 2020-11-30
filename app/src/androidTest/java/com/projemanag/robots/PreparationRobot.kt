@@ -1,18 +1,18 @@
 package com.projemanag.robots
 
-import com.projemanag.MockTest
-import com.projemanag.firebase.FirestoreValues
 import com.projemanag.firebase.IFirestoreClass
 import com.projemanag.testHelpers.FakeAuthResult
 
 import io.mockk.coEvery
 import io.mockk.every
 import java.lang.Exception
+import javax.inject.Inject
 
-fun prepare(scope: MockTest, func: PreparationRobot.() -> Unit) =
-    PreparationRobot(scope).apply { func() }
+fun prepare(func: PreparationRobot.() -> Unit) =
+    PreparationRobot().apply { func() }
 
-class PreparationRobot(private val scope: MockTest) {
+class PreparationRobot() {
+
 
     //    private val authUser = AuthUser("111111")
 //
@@ -36,14 +36,10 @@ class PreparationRobot(private val scope: MockTest) {
 //    }
 //
     fun mockNoAuthorizedUser() {
-        val firestoreClass = scope.firestoreScope
-        coEvery { firestoreClass.getCurrentUserID() } returns ""
     }
 
     //
     fun mockAuthorizedUser() {
-        val firestoreClass = scope.firestoreScope
-        coEvery { firestoreClass.getCurrentUserID() } returns "22222"
     }
 //
 //    fun mockUserSignOut() {

@@ -1,5 +1,6 @@
 package com.projemanag
 
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.IdlingRegistry
 import com.projemanag.utils.EspressoIdlingResource
 import com.schibsted.spain.barista.rule.cleardata.ClearDatabaseRule
@@ -12,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import javax.inject.Inject
 
-open class BaseTest {
+abstract class BaseTest {
 
     @Before
     fun setup() {
@@ -32,5 +33,9 @@ open class BaseTest {
 
     @get: Rule
     var clearFilesRule = ClearFilesRule()
+
+    val application: TestBaseApplication = ApplicationProvider.getApplicationContext() as TestBaseApplication
+
+    abstract fun injectTest()
 
 }

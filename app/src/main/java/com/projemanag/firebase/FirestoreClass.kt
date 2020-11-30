@@ -18,10 +18,12 @@ import com.projemanag.models.Board
 import com.projemanag.models.User
 import com.projemanag.utils.Constants
 import com.projemanag.utils.EspressoIdlingResource
+import javax.inject.Inject
 
 open class FirestoreClass : IFirestoreClass {
 
-    private val mFireStore = FirebaseFirestore.getInstance()
+    @Inject
+    lateinit var mFireStore : FirebaseFirestore
 
     override fun registerUser(activity: SignUpActivity, userInfo: User) {
         EspressoIdlingResource().increment()

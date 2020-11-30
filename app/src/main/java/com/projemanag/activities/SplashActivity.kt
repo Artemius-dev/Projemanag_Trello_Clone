@@ -7,13 +7,10 @@ import android.os.Handler
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.projemanag.R
-import com.projemanag.firebase.FirestoreValues
+import com.projemanag.firebase.FirestoreClass
 import kotlinx.android.synthetic.main.activity_splash.*
-import org.koin.android.ext.android.inject
 
 class SplashActivity : AppCompatActivity() {
-
-    private val currentUser : FirestoreValues by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +29,9 @@ class SplashActivity : AppCompatActivity() {
         // Need to go from this Activity to IntroActivity
         Handler().postDelayed(
             {
+                val currentUserId = FirestoreClass().getCurrentUserID()
 
-                if (currentUser.currentUserId.isNotEmpty()) {
+                if (currentUserId.isNotEmpty()) {
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     startActivity(Intent(this, IntroActivity::class.java))

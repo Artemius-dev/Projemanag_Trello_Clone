@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -13,7 +14,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.projemanag.MockTestRunner"
     }
 
     buildTypes {
@@ -83,19 +84,29 @@ dependencies {
     androidTestImplementation "io.mockk:mockk-android:1.10.2"
 
     // Mockito
+//    androidTestImplementation "org.mockito:mockito-core:3.3.3"
+    //androidTestImplementation "org.mockito:mockito-inline:3.6.27"
 
     // Mock Web Server
     androidTestImplementation 'io.fabric8:mockwebserver:0.1.0'
+
+    def dagger_version = "2.29"
+
+    // Dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger_version"
 
 
     def koin_version = "2.2.1"
     def kakao_version = "2.4.0"
 
-    // Koin
-    implementation "org.koin:koin-core:$koin_version"
-    implementation "org.koin:koin-android:$koin_version"
-    testImplementation "org.koin:koin-test:$koin_version"
-    androidTestImplementation "org.koin:koin-test:$koin_version"
+//    // Koin
+//    implementation "org.koin:koin-core:$koin_version"
+//    implementation "org.koin:koin-android:$koin_version"
+//    testImplementation "org.koin:koin-test:$koin_version"
+//    androidTestImplementation "org.koin:koin-test:$koin_version"
 
     // Kakao
     androidTestImplementation "com.agoda.kakao:kakao:$kakao_version"

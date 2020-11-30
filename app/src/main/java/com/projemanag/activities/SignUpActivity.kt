@@ -81,6 +81,10 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
+    fun registerUserFromJson(file: String?) {
+
+    }
+
     private fun validateForm(name: String, email: String, password: String): Boolean {
         return when {
             TextUtils.isEmpty(name) -> {

@@ -3,14 +3,17 @@ package com.projemanag.activities
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.projemanag.BaseApplication
 import com.projemanag.R
 import com.projemanag.utils.EspressoIdlingResource
 import kotlinx.android.synthetic.main.dialog_progress.*
+import javax.inject.Inject
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -18,9 +21,18 @@ open class BaseActivity : AppCompatActivity() {
 
     private lateinit var mProgressDialog: Dialog
 
+    private val TAG = "BaseActivity"
+
+    @Inject
+    lateinit var firebaseAuth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as BaseApplication).appComponent
+            .inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
+
+        Log.d(TAG, "onCreate: FirebaseAuth $firebaseAuth")
     }
 
     fun showProgressDialog(text: String) {
