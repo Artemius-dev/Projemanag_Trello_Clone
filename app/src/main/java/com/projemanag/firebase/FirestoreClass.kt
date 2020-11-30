@@ -20,12 +20,12 @@ import com.projemanag.utils.Constants
 import com.projemanag.utils.EspressoIdlingResource
 import javax.inject.Inject
 
-open class FirestoreClass : IFirestoreClass {
+open class FirestoreClass {
 
     @Inject
     lateinit var mFireStore : FirebaseFirestore
 
-    override fun registerUser(activity: SignUpActivity, userInfo: User) {
+     fun registerUser(activity: SignUpActivity, userInfo: User) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.USERS)
@@ -42,7 +42,7 @@ open class FirestoreClass : IFirestoreClass {
             }
     }
 
-    override fun getBoardDetails(activity: TaskListActivity, documentId: String) {
+     fun getBoardDetails(activity: TaskListActivity, documentId: String) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.BOARDS)
@@ -64,7 +64,7 @@ open class FirestoreClass : IFirestoreClass {
             }
     }
 
-    override fun createBoard(activity: CreateBoardActivity, board: Board) {
+     fun createBoard(activity: CreateBoardActivity, board: Board) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.BOARDS)
@@ -95,7 +95,7 @@ open class FirestoreClass : IFirestoreClass {
             }
     }
 
-    override fun getBoardsList(activity: MainActivity) {
+     fun getBoardsList(activity: MainActivity) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.BOARDS)
@@ -122,7 +122,7 @@ open class FirestoreClass : IFirestoreClass {
             }
     }
 
-    override fun addUpdateTaskList(activity: Activity, board: Board) {
+     fun addUpdateTaskList(activity: Activity, board: Board) {
         val taskListHashMap = HashMap<String, Any>()
         taskListHashMap[Constants.TASK_LIST] = board.taskList
 
@@ -152,7 +152,7 @@ open class FirestoreClass : IFirestoreClass {
             }
     }
 
-    override fun updateUserProfileData(
+     fun updateUserProfileData(
         activity: Activity,
         userHashMap: HashMap<String, Any>
     ) {
@@ -205,7 +205,7 @@ open class FirestoreClass : IFirestoreClass {
             }
     }
 
-    override fun loadUserData(activity: Activity, readBoardsList: Boolean) {
+     fun loadUserData(activity: Activity, readBoardsList: Boolean = false) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.USERS)
@@ -242,7 +242,7 @@ open class FirestoreClass : IFirestoreClass {
             }
     }
 
-    override fun getCurrentUserID(): String {
+     fun getCurrentUserID(): String {
         EspressoIdlingResource().increment()
         var currentUser = FirebaseAuth.getInstance().currentUser
         EspressoIdlingResource().decrement()
@@ -254,7 +254,7 @@ open class FirestoreClass : IFirestoreClass {
         return currentUserId
     }
 
-    override fun getAssignedMembersListDetails(activity: Activity, assignedTo: ArrayList<String>) {
+     fun getAssignedMembersListDetails(activity: Activity, assignedTo: ArrayList<String>) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.USERS)
@@ -292,7 +292,7 @@ open class FirestoreClass : IFirestoreClass {
             }
     }
 
-    override fun getMemberDetails(activity: MembersActivity, email: String) {
+     fun getMemberDetails(activity: MembersActivity, email: String) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.USERS)
@@ -321,7 +321,7 @@ open class FirestoreClass : IFirestoreClass {
             }
     }
 
-    override fun assignMemberToBoard(activity: MembersActivity, board: Board, user: User) {
+     fun assignMemberToBoard(activity: MembersActivity, board: Board, user: User) {
         EspressoIdlingResource().increment()
 
         val assignedToHashMap = HashMap<String, Any>()

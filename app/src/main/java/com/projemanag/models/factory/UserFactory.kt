@@ -19,7 +19,7 @@ constructor(
 ){
 
     fun createUser(name: String, email: String, password: String, activity: Activity) {
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val firebaseUser: FirebaseUser = task.result!!.user!!
