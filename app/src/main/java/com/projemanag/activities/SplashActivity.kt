@@ -5,11 +5,10 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import com.projemanag.BaseApplication
 import com.projemanag.R
-import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.factory.UserFactory
+import com.projemanag.utils.Constants
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
 
@@ -49,7 +48,7 @@ class SplashActivity : BaseActivity() {
 
                 finish()
             },
-            2500
+            Constants.SPLASH_SCREEN_DELAY
         )
     }
 }

@@ -1,10 +1,12 @@
 package com.projemanag.di
 
 import android.app.Application
+import com.projemanag.BaseTest
 import com.projemanag.LogInTest
 import com.projemanag.TestBaseApplication
 import com.projemanag.activities.SplashActivity
 import com.projemanag.factroy.UserFactory
+import com.projemanag.robots.BaseTestRobot
 import com.projemanag.splash.SplashActivityTest
 import dagger.BindsInstance
 import dagger.Component
@@ -41,4 +43,8 @@ interface TestAppComponent {
 //    fun getUserFactory(): UserFactory
 
     fun inject(target: SplashActivityTest)
+
+    fun inject(target: BaseTest)
+
+    fun inject(target: BaseTestRobot)
 }

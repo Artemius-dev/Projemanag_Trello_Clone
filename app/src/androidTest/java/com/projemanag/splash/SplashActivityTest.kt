@@ -1,23 +1,21 @@
 package com.projemanag.splash
 
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.Intents.times
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.google.firebase.auth.FirebaseAuth
+import com.projemanag.R
 import com.projemanag.TestBaseApplication
-import com.projemanag.activities.IntroActivity
-import com.projemanag.activities.MainActivity
+import com.projemanag.conditionwatcher.ConditionWatchers.waitForElementIsGone
 import com.projemanag.di.DaggerTestAppComponent
 import com.projemanag.di.TestModule
 import com.projemanag.factroy.UserFactory
-import com.projemanag.robots.splashActivityMockTestRule
-import kotlinx.coroutines.runBlocking
+import com.projemanag.robots.splashActivityTestRule
+import com.projemanag.robots.splashScreen
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.lang.Thread.sleep
 import javax.inject.Inject
 
 @RunWith(AndroidJUnit4ClassRunner::class)
@@ -31,46 +29,32 @@ class SplashActivityTest {
 
     @Before
     fun setup() {
-        var component = DaggerTestAppComponent.builder().testModule(TestModule(TestBaseApplication())).build()
+        var component =
+            DaggerTestAppComponent.builder().testModule(TestModule(TestBaseApplication())).build()
 
         component.inject(this)
 
-        signIn()
-    }
-
-    private fun signIn() = runBlocking {
-        userFactory.registerFakeUser()
-        firebaseAuth.signInWithEmailAndPassword(
-            EMAIL,
-            PASSWORD
-        )
-    }
-
-    private fun signOut() = runBlocking {
-        firebaseAuth.signOut()
-    }
-    companion object {
-        const val EMAIL = "antonio@gmail.com"
-        const val PASSWORD = "123456"
     }
 
     @Rule
     @JvmField
-    val activityRule = splashActivityMockTestRule
+    val activityRule = splashActivityTestRule
 
     @Test
     fun shouldOpenHomeActivityWhenUserIsAuthenticated() {
-        sleep(2500)
-        intended(hasComponent(MainActivity::class.java.name))
-        intended(hasComponent(IntroActivity::class.java.name), times(0))
-
+        splashScreen {
+            signIn()
+            waitForSplashScreenIsGone()
+        }
     }
 
     @Test
     fun shouldOpenLoginActivityWhenUserIsNotAuthenticated() {
-
-        intended(hasComponent(IntroActivity::class.java.name))
-        intended(hasComponent(MainActivity::class.java.name), times(0))
+        splashScreen {
+            signOut()
+            waitForSplashScreenIsGone()
+            checkIsUserIsNotLoggedIn()
+        }
     }
 
 }

@@ -5,9 +5,42 @@ import androidx.test.espresso.matcher.ViewMatchers.withHint
 import androidx.test.espresso.matcher.ViewMatchers.withSpinnerText
 import com.agoda.kakao.common.views.KView
 import com.agoda.kakao.edit.KEditText
+import com.google.firebase.auth.FirebaseAuth
+import com.projemanag.BaseTest
+import com.projemanag.TestBaseApplication
+import com.projemanag.di.DaggerTestAppComponent
+import com.projemanag.di.TestModule
+import com.projemanag.factroy.UserFactory
 import com.projemanag.matchers.RecyclerViewMatchers
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
 open class BaseTestRobot {
+
+    @Inject
+    lateinit var userFactory: UserFactory
+
+    @Inject
+    lateinit var firebaseAuth: FirebaseAuth
+
+    init {
+        val component = DaggerTestAppComponent.builder()
+            .testModule(TestModule(TestBaseApplication())).build()
+
+        component.inject(this)
+    }
+
+    fun signIn() = runBlocking {
+        userFactory.registerFakeUser()
+        firebaseAuth.signInWithEmailAndPassword(
+            BaseTest.EMAIL,
+            BaseTest.PASSWORD
+        )
+    }
+
+    fun signOut() = runBlocking {
+        firebaseAuth.signOut()
+    }
 
     fun enterText(viewId: Int, text: String) {
         val view = KEditText { withId(viewId) }
