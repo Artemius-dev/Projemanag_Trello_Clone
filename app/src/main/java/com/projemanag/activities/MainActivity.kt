@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
+import com.projemanag.BaseApplication
 import com.projemanag.R
 import com.projemanag.adapters.BoardItemsAdapter
 import com.projemanag.firebase.FirestoreClass
@@ -53,7 +54,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         if (tokenUpdated) {
             showProgressDialog(resources.getString(R.string.please_wait))
-            FirestoreClass().loadUserData(this, true)
+            firestoreClass.loadUserData(this, true)
         } else {
             FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(this@MainActivity) {
                 instanceIdResult ->
@@ -61,7 +62,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
         }
 
-        FirestoreClass().loadUserData(this, true)
+        firestoreClass.loadUserData(this, true)
 
         fab_create_board.setOnClickListener {
             val intent = Intent(
@@ -141,7 +142,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         if (readBoardsList) {
             showProgressDialog(resources.getString(R.string.please_wait))
-            FirestoreClass().getBoardsList(this)
+            firestoreClass.getBoardsList(this)
         }
     }
 
@@ -150,11 +151,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (resultCode == Activity.RESULT_OK &&
             requestCode == MY_PROFILE_REQUEST_CODE
         ) {
-            FirestoreClass().loadUserData(this)
+            firestoreClass.loadUserData(this)
         } else if (resultCode == Activity.RESULT_OK &&
             requestCode == CREATE_BOARD_REQUESTT_CODE
         ) {
-            FirestoreClass().getBoardsList(this)
+            firestoreClass.getBoardsList(this)
         } else {
             Log.e("Cancelled", "Cancelled")
         }
@@ -196,13 +197,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         editor.putBoolean(Constants.FCM_TOKEN_UPDATED, true)
         editor.apply()
         showProgressDialog(resources.getString(R.string.please_wait))
-        FirestoreClass().loadUserData(this, true)
+        firestoreClass.loadUserData(this, true)
     }
 
     private fun updateFCMToken(token: String) {
         val userHashMap = HashMap<String, Any>()
         userHashMap[Constants.FCM_TOKEN] = token
         showProgressDialog(resources.getString(R.string.please_wait))
-        FirestoreClass().updateUserProfileData(this, userHashMap)
+        firestoreClass.updateUserProfileData(this, userHashMap)
     }
 }

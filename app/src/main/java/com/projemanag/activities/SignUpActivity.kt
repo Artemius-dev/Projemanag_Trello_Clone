@@ -6,16 +6,25 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.projemanag.BaseApplication
 import com.projemanag.R
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.User
+import com.projemanag.models.factory.UserFactory
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import javax.inject.Inject
 
 class SignUpActivity : BaseActivity() {
+
+    @Inject
+    lateinit var userFactory: UserFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
         setupActionBar()
+
+        (application as BaseApplication).appComponent.inject(this)
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -61,23 +70,7 @@ class SignUpActivity : BaseActivity() {
 
         if (validateForm(name, email, password)) {
             showProgressDialog(resources.getString(R.string.please_wait))
-            FirebaseAuth.getInstance()
-                .createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val firebaseUser: FirebaseUser = task.result!!.user!!
-                        val registeredEmail = firebaseUser.email!!
-                        val user = User(firebaseUser.uid, name, registeredEmail)
-
-                        FirestoreClass().registerUser(this, user)
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Registration failed",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
+            userFactory.createUser(name, email, password, this)
         }
     }
 

@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
+import com.projemanag.BaseApplication
 import com.projemanag.R
 import com.projemanag.adapters.CardMemberListItemsAdapter
 import com.projemanag.dialogs.LabelColorListDialog
@@ -231,7 +232,7 @@ class CardDetailsActivity : BaseActivity() {
         mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition] = card
 
         showProgressDialog(resources.getString(R.string.please_wait))
-        FirestoreClass().addUpdateTaskList(this@CardDetailsActivity, mBoardDetails)
+        firestoreClass.addUpdateTaskList(this@CardDetailsActivity, mBoardDetails)
     }
 
     private fun deleteCard() {
@@ -246,7 +247,7 @@ class CardDetailsActivity : BaseActivity() {
         taskList[mTaskListPosition].cards = cardList
 
         showProgressDialog(resources.getString(R.string.please_wait))
-        FirestoreClass().addUpdateTaskList(this@CardDetailsActivity, mBoardDetails)
+        firestoreClass.addUpdateTaskList(this@CardDetailsActivity, mBoardDetails)
     }
 
     private fun alertDialogForDeleteCard(cardName: String) {

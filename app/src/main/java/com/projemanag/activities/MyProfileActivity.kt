@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.projemanag.BaseApplication
 import com.projemanag.R
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.User
@@ -33,7 +34,7 @@ class MyProfileActivity : BaseActivity() {
 
         setupActionBar()
 
-        FirestoreClass().loadUserData(this)
+        firestoreClass.loadUserData(this)
 
         iv_profile_user_image.setOnClickListener {
 
@@ -131,7 +132,7 @@ class MyProfileActivity : BaseActivity() {
             userHashMap[Constants.MOBILE] = et_mobile.text.toString().toLong()
         }
 
-        FirestoreClass().updateUserProfileData(this, userHashMap)
+        firestoreClass.updateUserProfileData(this, userHashMap)
     }
 
     fun setUserDataInUI(user: User) {

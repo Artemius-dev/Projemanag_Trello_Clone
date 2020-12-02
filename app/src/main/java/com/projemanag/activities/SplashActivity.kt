@@ -6,15 +6,23 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.projemanag.BaseApplication
 import com.projemanag.R
 import com.projemanag.firebase.FirestoreClass
+import com.projemanag.models.factory.UserFactory
 import kotlinx.android.synthetic.main.activity_splash.*
+import javax.inject.Inject
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
+
+    @Inject
+    lateinit var userFactory: UserFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+        (application as BaseApplication).appComponent.inject(this)
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -29,7 +37,9 @@ class SplashActivity : AppCompatActivity() {
         // Need to go from this Activity to IntroActivity
         Handler().postDelayed(
             {
-                val currentUserId = FirestoreClass().getCurrentUserID()
+//                userFactory.signOut()
+
+                val currentUserId = firestoreClass.getCurrentUserID()
 
                 if (currentUserId.isNotEmpty()) {
                     startActivity(Intent(this, MainActivity::class.java))

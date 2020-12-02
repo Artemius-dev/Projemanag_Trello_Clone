@@ -2,6 +2,7 @@ package com.projemanag
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.IdlingRegistry
+import com.projemanag.testHelpers.readJSONFromAsset
 import com.projemanag.utils.EspressoIdlingResource
 import com.schibsted.spain.barista.rule.cleardata.ClearDatabaseRule
 import com.schibsted.spain.barista.rule.cleardata.ClearFilesRule
@@ -9,14 +10,11 @@ import com.schibsted.spain.barista.rule.cleardata.ClearPreferencesRule
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import javax.inject.Inject
 
 abstract class BaseTest {
 
     @Before
-    fun setup() {
+    open fun setup() {
         IdlingRegistry.getInstance().register(EspressoIdlingResource().countingIdlingResource)
     }
 
@@ -33,8 +31,6 @@ abstract class BaseTest {
 
     @get: Rule
     var clearFilesRule = ClearFilesRule()
-
-    val application: TestBaseApplication = ApplicationProvider.getApplicationContext() as TestBaseApplication
 
     abstract fun injectTest()
 

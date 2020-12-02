@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.projemanag.BaseApplication
 import com.projemanag.R
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.User
@@ -68,7 +69,7 @@ class SignInActivity : BaseActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("Sign in", "signInWithEmail:success")
                         val user = auth.currentUser
-                        FirestoreClass().loadUserData(this)
+                        firestoreClass.loadUserData(this)
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("Sign in", "signInWithEmail:failure", task.exception)

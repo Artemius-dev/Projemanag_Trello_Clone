@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.projemanag.BaseApplication
 import com.projemanag.R
 import com.projemanag.adapters.MemberListItemsAdapter
 import com.projemanag.firebase.FirestoreClass
@@ -44,7 +45,7 @@ class MembersActivity : BaseActivity() {
         setupActionBar()
 
         showProgressDialog(resources.getString(R.string.please_wait))
-        FirestoreClass().getAssignedMembersListDetails(this, mBoardDetails.assignedTo)
+        firestoreClass.getAssignedMembersListDetails(this, mBoardDetails.assignedTo)
     }
 
     override fun onBackPressed() {
@@ -105,7 +106,7 @@ class MembersActivity : BaseActivity() {
                 if (email.isNotEmpty()) {
                     dialog.dismiss()
                     showProgressDialog(resources.getString(R.string.please_wait))
-                    FirestoreClass().getMemberDetails(this, email)
+                    firestoreClass.getMemberDetails(this, email)
                 } else {
                     showErrorSnackBar("Please enter members email address.")
                 }
@@ -122,7 +123,7 @@ class MembersActivity : BaseActivity() {
 
     fun memberDetails(user: User) {
         mBoardDetails.assignedTo.add(user.id)
-        FirestoreClass().assignMemberToBoard(this, mBoardDetails, user)
+        firestoreClass.assignMemberToBoard(this, mBoardDetails, user)
     }
 
     fun memberAssignSuccess(user: User) {

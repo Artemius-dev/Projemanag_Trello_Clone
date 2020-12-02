@@ -3,7 +3,6 @@ package com.projemanag.activities
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -11,7 +10,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.projemanag.BaseApplication
 import com.projemanag.R
-import com.projemanag.utils.EspressoIdlingResource
+import com.projemanag.di.DaggerAppComponent
+import com.projemanag.firebase.FirestoreClass
+import com.projemanag.models.factory.TaskFactory
+import com.projemanag.models.factory.UserFactory
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.dialog_progress.*
 import javax.inject.Inject
 
@@ -26,13 +29,27 @@ open class BaseActivity : AppCompatActivity() {
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
 
+    @Inject
+    lateinit var firestoreClass: FirestoreClass
+
+//    @Inject
+//    open lateinit var userFactory: UserFactory
+
+    @Inject
+    lateinit var taskFactory: TaskFactory
+
+    private val app = BaseApplication()
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as BaseApplication).appComponent
-            .inject(this)
+//        val appInjector = DaggerAppComponent.builder().application(app)?.build()
+
+//        appInjector?.inject(app)
+
+//        userFactory = appInjector!!.getUserFactory()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
 
-        Log.d(TAG, "onCreate: FirebaseAuth $firebaseAuth")
+        (application as BaseApplication).appComponent.inject(this)
     }
 
     fun showProgressDialog(text: String) {
@@ -53,8 +70,10 @@ open class BaseActivity : AppCompatActivity() {
         mProgressDialog.dismiss()
     }
 
+
+    // TODO Change FirebaseAuth to injection
     fun getCurrentUserID(): String {
-        return FirebaseAuth.getInstance().currentUser!!.uid
+        return firebaseAuth.currentUser!!.uid
     }
 
     fun doubleBackToExit() {

@@ -16,8 +16,12 @@ import com.projemanag.activities.MainActivity
 import com.projemanag.activities.SignInActivity
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.utils.Constants
+import javax.inject.Inject
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
+
+    @Inject
+    lateinit var firestoreClass: FirestoreClass
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
@@ -50,7 +54,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private fun sendNotification(title: String, message: String) {
 
-        val intent = if (FirestoreClass().getCurrentUserID().isNotEmpty()) {
+        val intent = if (firestoreClass.getCurrentUserID().isNotEmpty()) {
             Intent(this, MainActivity::class.java)
         } else {
             Intent(this, SignInActivity::class.java)

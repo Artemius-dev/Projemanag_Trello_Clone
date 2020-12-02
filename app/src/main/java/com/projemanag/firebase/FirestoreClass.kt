@@ -19,13 +19,14 @@ import com.projemanag.models.User
 import com.projemanag.utils.Constants
 import com.projemanag.utils.EspressoIdlingResource
 import javax.inject.Inject
+import javax.inject.Singleton
 
-open class FirestoreClass {
+@Singleton
+open class FirestoreClass
+@Inject
+constructor(val mFireStore: FirebaseFirestore, val mFireStoreAuth: FirebaseAuth) : IFirestoreClass{
 
-    @Inject
-    lateinit var mFireStore : FirebaseFirestore
-
-     fun registerUser(activity: SignUpActivity, userInfo: User) {
+     override fun registerUser(activity: SignUpActivity, userInfo: User) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.USERS)
@@ -42,7 +43,7 @@ open class FirestoreClass {
             }
     }
 
-     fun getBoardDetails(activity: TaskListActivity, documentId: String) {
+     override fun getBoardDetails(activity: TaskListActivity, documentId: String) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.BOARDS)
@@ -64,7 +65,7 @@ open class FirestoreClass {
             }
     }
 
-     fun createBoard(activity: CreateBoardActivity, board: Board) {
+     override fun createBoard(activity: CreateBoardActivity, board: Board) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.BOARDS)
@@ -95,7 +96,7 @@ open class FirestoreClass {
             }
     }
 
-     fun getBoardsList(activity: MainActivity) {
+     override fun getBoardsList(activity: MainActivity) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.BOARDS)
@@ -122,7 +123,7 @@ open class FirestoreClass {
             }
     }
 
-     fun addUpdateTaskList(activity: Activity, board: Board) {
+     override fun addUpdateTaskList(activity: Activity, board: Board) {
         val taskListHashMap = HashMap<String, Any>()
         taskListHashMap[Constants.TASK_LIST] = board.taskList
 
@@ -152,7 +153,7 @@ open class FirestoreClass {
             }
     }
 
-     fun updateUserProfileData(
+     override fun updateUserProfileData(
         activity: Activity,
         userHashMap: HashMap<String, Any>
     ) {
@@ -205,9 +206,10 @@ open class FirestoreClass {
             }
     }
 
-     fun loadUserData(activity: Activity, readBoardsList: Boolean = false) {
+     override fun loadUserData(activity: Activity, readBoardsList: Boolean) {
         EspressoIdlingResource().increment()
 
+         // TODO GetCurrentUserId return on test bad document
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserID())
             .get()
@@ -242,9 +244,9 @@ open class FirestoreClass {
             }
     }
 
-     fun getCurrentUserID(): String {
+     override fun getCurrentUserID(): String {
         EspressoIdlingResource().increment()
-        var currentUser = FirebaseAuth.getInstance().currentUser
+        var currentUser = mFireStoreAuth.currentUser
         EspressoIdlingResource().decrement()
         var currentUserId = ""
         if (currentUser != null) {
@@ -254,7 +256,7 @@ open class FirestoreClass {
         return currentUserId
     }
 
-     fun getAssignedMembersListDetails(activity: Activity, assignedTo: ArrayList<String>) {
+     override fun getAssignedMembersListDetails(activity: Activity, assignedTo: ArrayList<String>) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.USERS)
@@ -292,7 +294,7 @@ open class FirestoreClass {
             }
     }
 
-     fun getMemberDetails(activity: MembersActivity, email: String) {
+     override fun getMemberDetails(activity: MembersActivity, email: String) {
         EspressoIdlingResource().increment()
 
         mFireStore.collection(Constants.USERS)
@@ -321,7 +323,7 @@ open class FirestoreClass {
             }
     }
 
-     fun assignMemberToBoard(activity: MembersActivity, board: Board, user: User) {
+     override fun assignMemberToBoard(activity: MembersActivity, board: Board, user: User) {
         EspressoIdlingResource().increment()
 
         val assignedToHashMap = HashMap<String, Any>()

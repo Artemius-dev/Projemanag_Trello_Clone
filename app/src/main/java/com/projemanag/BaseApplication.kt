@@ -3,6 +3,7 @@ package com.projemanag
 import android.app.Application
 import com.projemanag.di.AppComponent
 import com.projemanag.di.DaggerAppComponent
+import com.projemanag.di.ProductionModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
@@ -14,12 +15,11 @@ open class BaseApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initAppComponent()
+        appComponent = initDagger(this)
     }
 
-    open fun initAppComponent() {
-        appComponent = DaggerAppComponent
-            .factory()
-            .create(this)
-    }
+    private fun initDagger(app: BaseApplication): AppComponent =
+        DaggerAppComponent.builder()
+            .productionModule(ProductionModule(app))
+            .build()
 }

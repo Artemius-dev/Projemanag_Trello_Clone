@@ -1,17 +1,24 @@
 package com.projemanag.di
 
+import android.app.Application
+import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthSettings
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.projemanag.factroy.TaskFactory
+import com.projemanag.factroy.UserFactory
+import com.projemanag.firebase.FirestoreClass
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-object TestModule {
+class TestModule(private val app: Application) {
 
-    @JvmStatic
+    @Provides
+    @Singleton
+    fun provideContext(): Context = app
+
     @Singleton
     @Provides
     fun provideFirestoreSettings(): FirebaseFirestoreSettings {
@@ -22,20 +29,40 @@ object TestModule {
             .build()
     }
 
-    @JvmStatic
     @Singleton
     @Provides
-    fun provideFirestoreAuth() {
-        return FirebaseAuth.getInstance().useEmulator("10.0.2.2", 9099)
+    fun provideFirestoreAuth(): FirebaseAuth {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAuth.useEmulator("10.0.2.2", 9099)
+        return firebaseAuth
     }
 
-    @JvmStatic
     @Singleton
     @Provides
     fun provideFirebaseFirestore(settings: FirebaseFirestoreSettings): FirebaseFirestore {
         val firestore = FirebaseFirestore.getInstance()
+
         firestore.firestoreSettings = settings
+
         return firestore
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirestoreClass(firebaseFirestore: FirebaseFirestore, firebaseAuth: FirebaseAuth): FirestoreClass {
+        return FirestoreClass(firebaseFirestore, firebaseAuth)
+    }
+
+    @Singleton
+    @Provides
+    fun provideTaskFactory(firestoreClass: FirestoreClass): TaskFactory {
+        return TaskFactory(firestoreClass)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserFactory(firebaseAuth: FirebaseAuth, firebaseFirestore: FirebaseFirestore, firestoreClass: FirestoreClass): UserFactory {
+        return UserFactory(firebaseAuth, firebaseFirestore, firestoreClass)
     }
 
 }

@@ -14,7 +14,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "com.projemanag.MockTestRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -93,10 +93,17 @@ dependencies {
     def dagger_version = "2.29"
 
     // Dagger
-    implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
-    kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger_version"
+    def daggerVer = 2.27 // or latest version
+
+    implementation "com.google.dagger:dagger:$daggerVer"
+    implementation "com.google.dagger:dagger-android-support:$daggerVer"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVer"
+    kapt "com.google.dagger:dagger-compiler:$daggerVer"
+    androidTestImplementation "com.google.dagger:dagger:$daggerVer"
+    androidTestImplementation "com.google.dagger:dagger-android-support:$daggerVer"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor:$daggerVer"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVer"
+
 
 
     def koin_version = "2.2.1"

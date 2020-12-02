@@ -13,12 +13,15 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.projemanag.BaseApplication
 import com.projemanag.R
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.Board
+import com.projemanag.models.factory.BoardFactory
 import com.projemanag.utils.Constants
 import kotlinx.android.synthetic.main.activity_create_board.*
 import java.io.IOException
+import javax.inject.Inject
 
 class CreateBoardActivity : BaseActivity() {
 
@@ -28,7 +31,11 @@ class CreateBoardActivity : BaseActivity() {
 
     private var mBoardImageURL: String = ""
 
+    @Inject
+    lateinit var boardFactory: BoardFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_board)
         setupActionBar()
@@ -38,7 +45,9 @@ class CreateBoardActivity : BaseActivity() {
         }
     }
 
-    private fun createBoard() {
+    fun createBoard() {
+        showProgressDialog(resources.getString(R.string.please_wait))
+
         val assignedUsersArrayList: ArrayList<String> = ArrayList()
         assignedUsersArrayList.add(getCurrentUserID())
 
@@ -49,39 +58,23 @@ class CreateBoardActivity : BaseActivity() {
             assignedUsersArrayList
         )
 
-        FirestoreClass().createBoard(this, board)
+        boardFactory.createBoard(this, board)
     }
 
     private fun uploadBoardImage() {
         showProgressDialog(resources.getString(R.string.please_wait))
 
-        val sRef: StorageReference =
-            FirebaseStorage.getInstance().reference.child(
-                "BOARD_IMAGE" + System.currentTimeMillis() + "." +
-                    Constants.getFileExtension(this, mSelectedImageFileUri)
-            )
+        val assignedUsersArrayList: ArrayList<String> = ArrayList()
+        assignedUsersArrayList.add(getCurrentUserID())
 
-        sRef.putFile(mSelectedImageFileUri!!).addOnSuccessListener { taskSnapshot ->
-            Log.e(
-                "Board Image URL",
-                taskSnapshot.metadata!!.reference!!.downloadUrl.toString()
-            )
+        var board = Board(
+            et_board_name.text.toString(),
+            mBoardImageURL,
+            mUserName,
+            assignedUsersArrayList
+        )
 
-            taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
-                Log.i("Downloadable Image URL", uri.toString())
-                mBoardImageURL = uri.toString()
-
-                createBoard()
-            }
-        }.addOnFailureListener { exception ->
-            Toast.makeText(
-                this,
-                exception.message,
-                Toast.LENGTH_LONG
-            ).show()
-
-            hideProgressDialog()
-        }
+        boardFactory.uploadBoardImage(this, board, mBoardImageURL, mSelectedImageFileUri)
     }
 
     fun boardCreatedSuccessfully() {

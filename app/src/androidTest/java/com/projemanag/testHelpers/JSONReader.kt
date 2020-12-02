@@ -13,3 +13,7 @@ fun readJSONFromAsset(file: String): String? {
     }
     return json
 }
+
+fun getFromFile(fileName: String): String? {
+    return readJSONFromAsset(fileName)
+}
