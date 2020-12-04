@@ -5,22 +5,24 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.projemanag.R
 import com.projemanag.activities.SignUpActivity
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.User
+import com.projemanag.utils.EspressoIdlingResource
 import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
 //@Singleton
-class UserFactory
+open class UserFactory
 @Inject
 constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseClass: FirestoreClass
-){
+) {
 
-    fun createUser(name: String, email: String, password: String, activity: Activity) {
+    open fun createUser(name: String, email: String, password: String, activity: Activity) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -32,19 +34,23 @@ constructor(
                 } else {
                     Toast.makeText(
                         activity,
-                        "Registration failed",
+                        activity.resources.getString(R.string.register_fail),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
     }
 
-    fun signOut() {
-        try {
-            firebaseAuth.signOut()
+    open fun getCurrentUserID(): String {
+        EspressoIdlingResource().increment()
+        var currentUser = firebaseAuth.currentUser
+        EspressoIdlingResource().decrement()
+        var currentUserId = ""
+        if (currentUser != null) {
+            currentUserId = currentUser.uid
         }
-        catch (exception: Exception) {
 
-        }
+        return currentUserId
     }
+
 }

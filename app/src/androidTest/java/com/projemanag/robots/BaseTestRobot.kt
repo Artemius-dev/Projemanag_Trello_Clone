@@ -1,19 +1,20 @@
 package com.projemanag.robots
 
+import android.content.Context
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.matcher.ViewMatchers.withHint
 import androidx.test.espresso.matcher.ViewMatchers.withSpinnerText
+import androidx.test.platform.app.InstrumentationRegistry
 import com.agoda.kakao.common.views.KView
 import com.agoda.kakao.edit.KEditText
 import com.google.firebase.auth.FirebaseAuth
-import com.projemanag.BaseTest
 import com.projemanag.TestBaseApplication
 import com.projemanag.di.DaggerTestAppComponent
 import com.projemanag.di.TestModule
-import com.projemanag.factroy.UserFactory
-import com.projemanag.matchers.RecyclerViewMatchers
-import kotlinx.coroutines.runBlocking
+import com.projemanag.factory.UserFactory
+import com.projemanag.utils.EspressoIdlingResource
 import javax.inject.Inject
+
 
 open class BaseTestRobot {
 
@@ -23,23 +24,39 @@ open class BaseTestRobot {
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
 
+    var context: Context
+
     init {
         val component = DaggerTestAppComponent.builder()
             .testModule(TestModule(TestBaseApplication())).build()
 
         component.inject(this)
+
+        context = InstrumentationRegistry.getInstrumentation().targetContext
     }
 
-    fun signIn() = runBlocking {
+    fun signIn() {
         userFactory.registerFakeUser()
         firebaseAuth.signInWithEmailAndPassword(
-            BaseTest.EMAIL,
-            BaseTest.PASSWORD
+            EMAIL,
+            PASSWORD
         )
     }
 
-    fun signOut() = runBlocking {
+    fun signOut() {
+        EspressoIdlingResource().increment()
+        val fAuth = FirebaseAuth.getInstance()
+        fAuth.signOut()
         firebaseAuth.signOut()
+        EspressoIdlingResource().decrement()
+    }
+
+    fun registerFakeUser() {
+        userFactory.registerFakeUser()
+    }
+
+    fun deleteFakeUser() {
+        userFactory.deleteFakeUser()
     }
 
     fun enterText(viewId: Int, text: String) {
@@ -133,5 +150,11 @@ open class BaseTestRobot {
 //            RecyclerViewMatchers.withItemCount(itemCount)
 //        }
 //    }
+
+    companion object {
+        const val EMAIL = "antonio@gmail.com"
+        const val PASSWORD = "123456"
+        const val NAME = "Antonio Berluskoni"
+    }
 
 }

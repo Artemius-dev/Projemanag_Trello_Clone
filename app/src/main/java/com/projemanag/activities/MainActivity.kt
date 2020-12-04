@@ -176,7 +176,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
 
             R.id.nav_sign_out -> {
-                FirebaseAuth.getInstance().signOut()
+                firebaseAuth.signOut()
 
                 mSharedPraferences.edit().clear().apply()
 

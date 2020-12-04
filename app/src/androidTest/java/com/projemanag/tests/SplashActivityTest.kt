@@ -1,15 +1,11 @@
-package com.projemanag.splash
+package com.projemanag.tests
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.google.firebase.auth.FirebaseAuth
-import com.projemanag.R
 import com.projemanag.TestBaseApplication
-import com.projemanag.conditionwatcher.ConditionWatchers.waitForElementIsGone
 import com.projemanag.di.DaggerTestAppComponent
 import com.projemanag.di.TestModule
-import com.projemanag.factroy.UserFactory
+import com.projemanag.factory.UserFactory
 import com.projemanag.robots.splashActivityTestRule
 import com.projemanag.robots.splashScreen
 import org.junit.Before
@@ -29,10 +25,10 @@ class SplashActivityTest {
 
     @Before
     fun setup() {
-        var component =
-            DaggerTestAppComponent.builder().testModule(TestModule(TestBaseApplication())).build()
-
-        component.inject(this)
+//        var component =
+//            DaggerTestAppComponent.builder().testModule(TestModule(TestBaseApplication())).build()
+//
+//        component.inject(this)
 
     }
 
@@ -45,6 +41,7 @@ class SplashActivityTest {
         splashScreen {
             signIn()
             waitForSplashScreenIsGone()
+            checkIsUserIsLoggedIn()
         }
     }
 

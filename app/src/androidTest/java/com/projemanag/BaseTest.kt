@@ -1,30 +1,23 @@
 package com.projemanag
 
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.IdlingRegistry
-import com.google.firebase.auth.FirebaseAuth
-import com.projemanag.di.DaggerAppComponent
 import com.projemanag.di.DaggerTestAppComponent
 import com.projemanag.di.TestModule
-import com.projemanag.factroy.UserFactory
-import com.projemanag.testHelpers.readJSONFromAsset
 import com.projemanag.utils.EspressoIdlingResource
 import com.schibsted.spain.barista.rule.cleardata.ClearDatabaseRule
 import com.schibsted.spain.barista.rule.cleardata.ClearFilesRule
 import com.schibsted.spain.barista.rule.cleardata.ClearPreferencesRule
-import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
-import javax.inject.Inject
 
 abstract class BaseTest {
 
     init {
-        val component = DaggerTestAppComponent.builder()
-            .testModule(TestModule(BaseApplication())).build()
-
-        component.inject(this)
+//        val component = DaggerTestAppComponent.builder()
+//            .testModule(TestModule(BaseApplication())).build()
+//
+//        component.inject(this)
     }
 
     @Before
@@ -33,7 +26,7 @@ abstract class BaseTest {
     }
 
     @After
-    fun teardown() {
+    open fun teardown() {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource().countingIdlingResource)
     }
 
@@ -52,7 +45,5 @@ abstract class BaseTest {
         const val EMAIL = "antonio@gmail.com"
         const val PASSWORD = "123456"
     }
-
-    abstract fun injectTest()
 
 }

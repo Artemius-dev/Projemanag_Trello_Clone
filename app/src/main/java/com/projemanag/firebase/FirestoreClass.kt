@@ -209,7 +209,6 @@ constructor(val mFireStore: FirebaseFirestore, val mFireStoreAuth: FirebaseAuth)
      override fun loadUserData(activity: Activity, readBoardsList: Boolean) {
         EspressoIdlingResource().increment()
 
-         // TODO GetCurrentUserId return on test bad document
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserID())
             .get()

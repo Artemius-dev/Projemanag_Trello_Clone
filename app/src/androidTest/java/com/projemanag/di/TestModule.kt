@@ -5,8 +5,8 @@ import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.projemanag.factroy.TaskFactory
-import com.projemanag.factroy.UserFactory
+import com.projemanag.factory.TaskFactory
+import com.projemanag.factory.UserFactory
 import com.projemanag.firebase.FirestoreClass
 import dagger.Module
 import dagger.Provides

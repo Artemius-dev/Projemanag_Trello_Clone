@@ -14,11 +14,11 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class ProductionModule(private val app: Application) {
+open class ProductionModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideContext(): Context = app
+    open fun provideContext(): Context = app
 
     @Singleton
     @Provides
@@ -34,7 +34,7 @@ class ProductionModule(private val app: Application) {
 
     @Singleton
     @Provides
-    fun provideUserFactory(
+    open fun provideUserFactory(
         firebaseAuth: FirebaseAuth,
         firebaseFirestore: FirebaseFirestore,
         firebaseClass: FirestoreClass
@@ -44,13 +44,13 @@ class ProductionModule(private val app: Application) {
 
     @Singleton
     @Provides
-    fun provideCardFactory(firestoreClass: FirestoreClass): TaskFactory {
+    open fun provideTaskFactory(firestoreClass: FirestoreClass): TaskFactory {
         return TaskFactory(firestoreClass)
     }
 
     @Singleton
     @Provides
-    fun provideFirestoreClass(
+    open fun provideFirestoreClass(
         firebase: FirebaseFirestore,
         firebaseAuth: FirebaseAuth
     ): IFirestoreClass {

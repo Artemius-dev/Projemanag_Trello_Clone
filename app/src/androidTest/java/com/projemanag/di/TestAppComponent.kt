@@ -1,18 +1,14 @@
 package com.projemanag.di
 
-import android.app.Application
+import com.azimolabs.conditionwatcher.ConditionWatcher
 import com.projemanag.BaseTest
-import com.projemanag.LogInTest
-import com.projemanag.TestBaseApplication
-import com.projemanag.activities.SplashActivity
-import com.projemanag.factroy.UserFactory
+import com.projemanag.conditionwatcher.ConditionWatchers
+import com.projemanag.tests.IntroScreenTest
 import com.projemanag.robots.BaseTestRobot
-import com.projemanag.splash.SplashActivityTest
-import dagger.BindsInstance
+import com.projemanag.tests.SignInScreenTest
+import com.projemanag.tests.SignUpScreenTest
+import com.projemanag.tests.SplashActivityTest
 import dagger.Component
-import dagger.android.AndroidInjector
-import dagger.android.support.AndroidSupportInjectionModule
-import dagger.android.support.DaggerApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import javax.inject.Singleton
@@ -43,6 +39,12 @@ interface TestAppComponent {
 //    fun getUserFactory(): UserFactory
 
     fun inject(target: SplashActivityTest)
+
+    fun inject(target: IntroScreenTest)
+
+    fun inject(target: SignInScreenTest)
+
+    fun inject(target: SignUpScreenTest)
 
     fun inject(target: BaseTest)
 

@@ -1,18 +1,13 @@
 package com.projemanag.conditionwatcher
 
 import android.view.View
-import android.widget.TextView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.azimolabs.conditionwatcher.ConditionWatcher
 import com.azimolabs.conditionwatcher.Instruction
-import com.projemanag.R
-import org.hamcrest.CoreMatchers.anyOf
-import org.hamcrest.CoreMatchers.startsWith
 import org.hamcrest.Matcher
 
 object ConditionWatchers {
@@ -24,27 +19,6 @@ object ConditionWatchers {
     init {
         ConditionWatcher.setTimeoutLimit(TIMEOUT_LIMIT)
         ConditionWatcher.setWatchInterval(400)
-    }
-
-    @Throws(Exception::class)
-    @JvmStatic
-    fun snackbarGone() {
-        ConditionWatcher.waitForCondition(object : Instruction() {
-            override fun getDescription(): String {
-                return "Condition todoListSnackbarGone"
-            }
-
-            override fun checkCondition(): Boolean {
-                try {
-                    onView(anyOf(withText(startsWith("Please enter")), withText(startsWith("No such")))).check(
-                        matches(isDisplayed()))
-                    return false
-                } catch (e: Exception) {
-                    return true
-                }
-
-            }
-        })
     }
 
     @Throws(Exception::class)

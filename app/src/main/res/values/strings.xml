@@ -61,5 +61,13 @@
     <string name="str_select_member">Select Member</string>
 
     <string name="default_notification_channel_id">projemanag_notification_channel_id</string>
+    <string name="pls_enter_members_email">Please enter members email address.</string>
+    <string name="pls_enter_email">Please enter an email</string>
+    <string name="pls_enter_password">Please enter a password</string>
+    <string name="register_success">You have successfully registered the email address</string>
+    <string name="register_fail">Registration failed</string>
+    <string name="please_enter_a_name">Please enter a name</string>
+    <string name="please_enter_an_email">Please enter an email</string>
+    <string name="please_enter_a_password">Please enter a password</string>
 
 </resources>

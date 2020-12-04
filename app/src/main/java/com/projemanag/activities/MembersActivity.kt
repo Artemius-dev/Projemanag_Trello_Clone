@@ -108,7 +108,7 @@ class MembersActivity : BaseActivity() {
                     showProgressDialog(resources.getString(R.string.please_wait))
                     firestoreClass.getMemberDetails(this, email)
                 } else {
-                    showErrorSnackBar("Please enter members email address.")
+                    showErrorSnackBar(resources.getString(R.string.pls_enter_members_email))
                 }
             }
         )

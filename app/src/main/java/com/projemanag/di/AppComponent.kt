@@ -4,6 +4,7 @@ import android.app.Application
 import com.projemanag.BaseApplication
 import com.projemanag.activities.BaseActivity
 import com.projemanag.activities.SignInActivity
+import com.projemanag.activities.SignUpActivity
 import com.projemanag.activities.SplashActivity
 import com.projemanag.models.factory.UserFactory
 import dagger.BindsInstance
@@ -46,4 +47,7 @@ interface AppComponent {
     fun inject(target: SplashActivity)
 
     fun inject(target: SignInActivity)
+
+    fun inject(target: SignUpActivity)
+
 }

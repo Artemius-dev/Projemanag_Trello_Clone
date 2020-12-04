@@ -5,11 +5,10 @@ import android.text.TextUtils
 import android.view.WindowManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.projemanag.BaseApplication
 import com.projemanag.R
-import com.projemanag.firebase.FirestoreClass
-import com.projemanag.models.User
+import com.projemanag.di.DaggerAppComponent
+import com.projemanag.di.ProductionModule
 import com.projemanag.models.factory.UserFactory
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import javax.inject.Inject
@@ -24,8 +23,9 @@ class SignUpActivity : BaseActivity() {
         setContentView(R.layout.activity_sign_up)
         setupActionBar()
 
-        (application as BaseApplication).appComponent.inject(this)
+        val component = DaggerAppComponent.builder().productionModule(ProductionModule(BaseApplication())).build()
 
+        component.inject(this)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -36,9 +36,7 @@ class SignUpActivity : BaseActivity() {
 
         Toast.makeText(
             this,
-            "you have " +
-                "succesfully registerd the email " +
-                "address",
+            resources.getString(R.string.register_success),
             Toast.LENGTH_LONG
         ).show()
         hideProgressDialog()
@@ -74,22 +72,18 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
-    fun registerUserFromJson(file: String?) {
-
-    }
-
     private fun validateForm(name: String, email: String, password: String): Boolean {
         return when {
             TextUtils.isEmpty(name) -> {
-                showErrorSnackBar("Please enter a name")
+                showErrorSnackBar(resources.getString(R.string.please_enter_a_name))
                 false
             }
             TextUtils.isEmpty(email) -> {
-                showErrorSnackBar("Please enter an email")
+                showErrorSnackBar(resources.getString(R.string.please_enter_an_email))
                 false
             }
             TextUtils.isEmpty(password) -> {
-                showErrorSnackBar("Please enter a password")
+                showErrorSnackBar(resources.getString(R.string.please_enter_a_password))
                 false
             }
             else -> {
