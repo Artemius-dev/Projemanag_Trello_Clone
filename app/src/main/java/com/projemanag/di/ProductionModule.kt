@@ -4,21 +4,26 @@ import android.app.Application
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.projemanag.BaseApplication
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.firebase.IFirestoreClass
 import com.projemanag.models.factory.BoardFactory
+import com.projemanag.models.factory.IUserFactory
 import com.projemanag.models.factory.TaskFactory
 import com.projemanag.models.factory.UserFactory
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import javax.inject.Singleton
 
 @Module
-open class ProductionModule(private val app: Application) {
+@InstallIn(ApplicationComponent::class)
+open class ProductionModule() {
 
-    @Provides
-    @Singleton
-    open fun provideContext(): Context = app
+//    @Provides
+//    @Singleton
+//    open fun provideContext(): Context = app
 
     @Singleton
     @Provides
@@ -38,7 +43,7 @@ open class ProductionModule(private val app: Application) {
         firebaseAuth: FirebaseAuth,
         firebaseFirestore: FirebaseFirestore,
         firebaseClass: FirestoreClass
-    ): UserFactory {
+    ): IUserFactory {
         return UserFactory(firebaseAuth, firebaseClass)
     }
 

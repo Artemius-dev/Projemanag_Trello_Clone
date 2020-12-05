@@ -62,9 +62,9 @@ class HomeScreenRobot : BaseTestRobot() {
 //        isBottomNavigationHasCheckedItemId(R.id.navigation, R.id.navigation_map)
 //    }
 
-    fun isSuccessfullyLoaded() {
-        KIntent {
-            hasComponent(MainActivity::class.java.name)
-        }
-    }
+//    fun isSuccessfullyLoaded() {
+//        KIntent {
+//            hasComponent(MainActivity::class.java.name)
+//        }
+//    }
 }

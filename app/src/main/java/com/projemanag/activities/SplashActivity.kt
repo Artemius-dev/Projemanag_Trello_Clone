@@ -8,17 +8,14 @@ import android.util.Log
 import android.view.WindowManager
 import com.projemanag.BaseApplication
 import com.projemanag.R
-import com.projemanag.di.DaggerAppComponent
-import com.projemanag.di.ProductionModule
 import com.projemanag.models.factory.UserFactory
 import com.projemanag.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
 
+//@AndroidEntryPoint
 class SplashActivity : BaseActivity() {
-
-    @Inject
-    lateinit var userFactory: UserFactory
 
     private val TAG = "SplashActivity"
 
@@ -26,9 +23,9 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val component = DaggerAppComponent.builder().productionModule(ProductionModule(BaseApplication())).build()
-
-        component.inject(this)
+//        val component = DaggerAppComponent.builder().productionModule(ProductionModule(BaseApplication())).build()
+//
+//        component.inject(this)
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,

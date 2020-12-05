@@ -16,6 +16,7 @@ import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.Board
 import com.projemanag.models.User
 import com.projemanag.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_members.*
 import kotlinx.android.synthetic.main.dialog_search_member.*
 import org.json.JSONObject
@@ -28,6 +29,7 @@ import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
 import java.net.URL
 
+//@AndroidEntryPoint
 class MembersActivity : BaseActivity() {
 
     private lateinit var mBoardDetails: Board

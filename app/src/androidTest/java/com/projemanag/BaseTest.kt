@@ -1,8 +1,6 @@
 package com.projemanag
 
 import androidx.test.espresso.IdlingRegistry
-import com.projemanag.di.DaggerTestAppComponent
-import com.projemanag.di.TestModule
 import com.projemanag.utils.EspressoIdlingResource
 import com.schibsted.spain.barista.rule.cleardata.ClearDatabaseRule
 import com.schibsted.spain.barista.rule.cleardata.ClearFilesRule

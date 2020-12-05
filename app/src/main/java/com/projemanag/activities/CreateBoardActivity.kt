@@ -19,10 +19,12 @@ import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.Board
 import com.projemanag.models.factory.BoardFactory
 import com.projemanag.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_create_board.*
 import java.io.IOException
 import javax.inject.Inject
 
+//@AndroidEntryPoint
 class CreateBoardActivity : BaseActivity() {
 
     private var mSelectedImageFileUri: Uri? = null
@@ -30,9 +32,6 @@ class CreateBoardActivity : BaseActivity() {
     private lateinit var mUserName: String
 
     private var mBoardImageURL: String = ""
-
-    @Inject
-    lateinit var boardFactory: BoardFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

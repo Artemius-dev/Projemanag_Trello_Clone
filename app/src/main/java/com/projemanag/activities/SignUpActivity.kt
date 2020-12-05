@@ -7,25 +7,22 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.projemanag.BaseApplication
 import com.projemanag.R
-import com.projemanag.di.DaggerAppComponent
-import com.projemanag.di.ProductionModule
 import com.projemanag.models.factory.UserFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import javax.inject.Inject
 
+//@AndroidEntryPoint
 class SignUpActivity : BaseActivity() {
-
-    @Inject
-    lateinit var userFactory: UserFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
         setupActionBar()
 
-        val component = DaggerAppComponent.builder().productionModule(ProductionModule(BaseApplication())).build()
-
-        component.inject(this)
+//        val component = DaggerAppComponent.builder().productionModule(ProductionModule(BaseApplication())).build()
+//
+//        component.inject(this)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN

@@ -14,15 +14,21 @@ import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
+interface IUserFactory {
+    open fun createUser(name: String, email: String, password: String, activity: Activity)
+
+    open fun getCurrentUserID(): String
+}
+
 //@Singleton
 open class UserFactory
 @Inject
 constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseClass: FirestoreClass
-) {
+) : IUserFactory {
 
-    open fun createUser(name: String, email: String, password: String, activity: Activity) {
+    override fun createUser(name: String, email: String, password: String, activity: Activity) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -41,7 +47,7 @@ constructor(
             }
     }
 
-    open fun getCurrentUserID(): String {
+    override fun getCurrentUserID(): String {
         EspressoIdlingResource().increment()
         var currentUser = firebaseAuth.currentUser
         EspressoIdlingResource().decrement()

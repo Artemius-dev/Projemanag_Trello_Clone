@@ -22,12 +22,14 @@ import com.projemanag.models.SelectedMembers
 import com.projemanag.models.Task
 import com.projemanag.models.User
 import com.projemanag.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_card_details.*
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import kotlin.collections.ArrayList
 
+//@AndroidEntryPoint
 class CardDetailsActivity : BaseActivity() {
 
     private lateinit var mBoardDetails: Board

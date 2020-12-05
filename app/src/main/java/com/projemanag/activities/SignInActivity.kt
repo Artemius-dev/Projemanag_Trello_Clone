@@ -13,18 +13,23 @@ import com.projemanag.BaseApplication
 import com.projemanag.R
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.User
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_sign_in.*
+import javax.inject.Inject
 
+//@AndroidEntryPoint
 class SignInActivity : BaseActivity() {
 
-    private lateinit var auth: FirebaseAuth
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
         setupActionBar()
 
-        auth = Firebase.auth
+//        auth = Firebase.auth
+
+        auth = firebaseAuth
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,

@@ -8,31 +8,60 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.agoda.kakao.common.views.KView
 import com.agoda.kakao.edit.KEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.projemanag.MyCustomComponentBuilder
 import com.projemanag.TestBaseApplication
-import com.projemanag.di.DaggerTestAppComponent
-import com.projemanag.di.TestModule
+import com.projemanag.TestBaseApplication_Application
 import com.projemanag.factory.UserFactory
+import com.projemanag.utils.Constants
 import com.projemanag.utils.EspressoIdlingResource
+import dagger.hilt.EntryPoint
+import dagger.hilt.EntryPoints
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.internal.managers.ApplicationComponentManager
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.HiltTestApplication
+import org.junit.Rule
 import javax.inject.Inject
 
+//@HiltAndroidTest
+open class BaseTestRobot
+@Inject
+constructor(
+    val componentBuilder: MyCustomComponentBuilder
+){
 
-open class BaseTestRobot {
+    constructor()
 
-    @Inject
-    lateinit var userFactory: UserFactory
+//    @get: Rule
+//    val hiltRule = HiltAndroidRule(this)
 
-    @Inject
-    lateinit var firebaseAuth: FirebaseAuth
+    var userFactory: UserFactory
 
-    var context: Context
+    var firebaseAuth: FirebaseAuth
+
+    var context: Context = InstrumentationRegistry.getInstrumentation().targetContext
+
+    @EntryPoint
+    @InstallIn(ApplicationComponent::class)
+    interface MyClassInterface {
+        fun getFirebaseAuth(): FirebaseAuth
+
+        fun getUserFactory(): UserFactory
+    }
 
     init {
-        val component = DaggerTestAppComponent.builder()
-            .testModule(TestModule(TestBaseApplication())).build()
+//        val component = TestBaseApplication_Application.builder()
+//
+//        component.inject(this)
 
-        component.inject(this)
+        val component = componentBuilder.build()
 
-        context = InstrumentationRegistry.getInstrumentation().targetContext
+        val myClassInterface =
+            EntryPoints.get(component, MyClassInterface::class.java)
+        userFactory = myClassInterface.getUserFactory()
+        firebaseAuth = myClassInterface.getFirebaseAuth()
     }
 
     fun signIn() {

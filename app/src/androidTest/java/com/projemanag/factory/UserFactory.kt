@@ -10,6 +10,7 @@ import com.google.firebase.firestore.SetOptions
 import com.projemanag.activities.SignUpActivity
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.User
+import com.projemanag.models.factory.IUserFactory
 import com.projemanag.models.factory.UserFactory
 import com.projemanag.utils.Constants
 import com.projemanag.utils.EspressoIdlingResource
@@ -25,7 +26,7 @@ constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseFirestore: FirebaseFirestore,
     private val firestoreClass: FirestoreClass
-): UserFactory(firebaseAuth, firestoreClass) {
+): IUserFactory {
 
     private val TAG = "UserFactory"
 

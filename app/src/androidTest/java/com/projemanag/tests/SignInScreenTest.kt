@@ -5,8 +5,6 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.rule.ActivityTestRule
 import com.projemanag.BaseApplication
 import com.projemanag.activities.SplashActivity
-import com.projemanag.di.DaggerTestAppComponent
-import com.projemanag.di.TestModule
 import com.projemanag.robots.introScreen
 import com.projemanag.robots.signInScreen
 import com.projemanag.robots.splashScreen
@@ -26,10 +24,10 @@ class SignInScreenTest() {
     @Before
     fun setup() {
 
-        val component =
-            DaggerTestAppComponent.builder().testModule(TestModule(BaseApplication())).build()
-
-        component.inject(this)
+//        val component =
+//            DaggerTestAppComponent.builder().testModule(TestModule(BaseApplication())).build()
+//
+//        component.inject(this)
 
         Intents.init()
 

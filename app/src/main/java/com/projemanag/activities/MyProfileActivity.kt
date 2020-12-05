@@ -19,9 +19,11 @@ import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.User
 import com.projemanag.utils.Constants
 import com.projemanag.utils.Constants.READ_STORAGE_PERMISSION_CODE
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_my_profile.*
 import java.io.IOException
 
+//@AndroidEntryPoint
 class MyProfileActivity : BaseActivity() {
 
     private var mSelectedImageFileUri: Uri? = null

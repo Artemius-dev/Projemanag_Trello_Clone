@@ -21,7 +21,6 @@ import com.projemanag.utils.EspressoIdlingResource
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 open class FirestoreClass
 @Inject
 constructor(val mFireStore: FirebaseFirestore, val mFireStoreAuth: FirebaseAuth) : IFirestoreClass{

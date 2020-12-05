@@ -3,9 +3,6 @@ package com.projemanag.tests
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.projemanag.BaseApplication
 import com.projemanag.BaseTest
-import com.projemanag.di.DaggerTestAppComponent
-import com.projemanag.di.TestModule
-import com.projemanag.factory.UserFactory
 import com.projemanag.robots.introScreen
 import com.projemanag.robots.splashActivityTestRule
 import com.projemanag.robots.splashScreen
@@ -21,9 +18,6 @@ class IntroScreenTest() : BaseTest(){
     @Rule
     @JvmField
     var mActivityTestRule = splashActivityTestRule
-
-    @Inject
-    lateinit var userFactory: UserFactory
 
     @Before
     override fun setup() {

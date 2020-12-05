@@ -14,8 +14,10 @@ import com.projemanag.models.Card
 import com.projemanag.models.Task
 import com.projemanag.models.User
 import com.projemanag.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_task_list.*
 
+//@AndroidEntryPoint
 class TaskListActivity : BaseActivity() {
 
     private lateinit var mBoardDetails: Board

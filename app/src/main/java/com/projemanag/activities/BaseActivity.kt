@@ -1,9 +1,6 @@
 package com.projemanag.activities
 
 import android.app.Dialog
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
@@ -11,20 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.projemanag.BaseApplication
 import com.projemanag.R
-import com.projemanag.di.DaggerAppComponent
-import com.projemanag.di.ProductionModule
 import com.projemanag.firebase.FirestoreClass
+import com.projemanag.models.factory.BoardFactory
+import com.projemanag.models.factory.IUserFactory
 import com.projemanag.models.factory.TaskFactory
 import com.projemanag.models.factory.UserFactory
 import com.projemanag.utils.EspressoIdlingResource
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dialog_progress.*
-import java.lang.reflect.Field
-import java.lang.reflect.Method
 import javax.inject.Inject
 
+@AndroidEntryPoint
 open class BaseActivity : AppCompatActivity() {
 
     private var doubleBackToExitPressedOnce = false
@@ -42,13 +37,19 @@ open class BaseActivity : AppCompatActivity() {
     @Inject
     lateinit var taskFactory: TaskFactory
 
+    @Inject
+    lateinit var boardFactory: BoardFactory
+
+    @Inject
+    lateinit var userFactory: IUserFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
 
-        val component = DaggerAppComponent.builder().productionModule(ProductionModule(BaseApplication())).build()
-
-        component.inject(this)
+//        val component = DaggerAppComponent.builder().productionModule(ProductionModule(BaseApplication())).build()
+//
+//        component.inject(this)
     }
 
     fun showProgressDialog(text: String) {
