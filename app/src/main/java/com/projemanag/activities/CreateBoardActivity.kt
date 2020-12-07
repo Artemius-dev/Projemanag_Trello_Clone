@@ -11,19 +11,13 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.projemanag.BaseApplication
 import com.projemanag.R
-import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.Board
-import com.projemanag.models.factory.BoardFactory
 import com.projemanag.utils.Constants
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_create_board.*
 import java.io.IOException
-import javax.inject.Inject
 
+private const val TAG = "CreateBoardActivity"
 //@AndroidEntryPoint
 class CreateBoardActivity : BaseActivity() {
 
@@ -45,19 +39,43 @@ class CreateBoardActivity : BaseActivity() {
     }
 
     fun createBoard() {
-        showProgressDialog(resources.getString(R.string.please_wait))
 
-        val assignedUsersArrayList: ArrayList<String> = ArrayList()
-        assignedUsersArrayList.add(getCurrentUserID())
+        val boardName = et_board_name.text.toString()
 
-        var board = Board(
-            et_board_name.text.toString(),
-            mBoardImageURL,
-            mUserName,
-            assignedUsersArrayList
-        )
+        if (boardName.isNotEmpty()) {
+            showProgressDialog(resources.getString(R.string.please_wait))
 
-        boardFactory.createBoard(this, board)
+            val assignedUsersArrayList: ArrayList<String> = ArrayList()
+            assignedUsersArrayList.add(getCurrentUserID())
+
+            var board = Board(
+                boardName,
+                mBoardImageURL,
+                mUserName,
+                assignedUsersArrayList
+            )
+
+            firebaseFirestore.collection(Constants.BOARDS).whereEqualTo(Constants.NAME, boardName)
+                .get()
+                .addOnSuccessListener {
+                    querySnapshot ->
+                    val listDocuments = querySnapshot.documents
+                    Log.d(TAG, "createBoard: ListDocuments ${listDocuments.isEmpty()}")
+                    if(listDocuments.isEmpty()) {
+                        boardFactory.createBoard(this, board)
+
+                    }
+                    else {
+                        hideProgressDialog()
+
+                        showErrorSnackBar(resources.getString(R.string.please_enter_another_name_for_a_board))
+                    }
+
+                }.addOnFailureListener {
+                }
+        } else {
+            showErrorSnackBar(resources.getString(R.string.board_name_is_blank))
+        }
     }
 
     private fun uploadBoardImage() {
@@ -114,7 +132,6 @@ class CreateBoardActivity : BaseActivity() {
             if (mSelectedImageFileUri != null) {
                 uploadBoardImage()
             } else {
-                showProgressDialog(resources.getString(R.string.please_wait))
                 createBoard()
             }
         }
@@ -136,7 +153,7 @@ class CreateBoardActivity : BaseActivity() {
             Toast.makeText(
                 this,
                 "Oops, you just denied the permission for storage. " +
-                    "You ca also allow it from settings.",
+                        "You ca also allow it from settings.",
                 Toast.LENGTH_LONG
             ).show()
         }

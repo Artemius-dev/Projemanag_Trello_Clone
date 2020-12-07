@@ -14,12 +14,6 @@ import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface IUserFactory {
-    open fun createUser(name: String, email: String, password: String, activity: Activity)
-
-    open fun getCurrentUserID(): String
-}
-
 //@Singleton
 open class UserFactory
 @Inject

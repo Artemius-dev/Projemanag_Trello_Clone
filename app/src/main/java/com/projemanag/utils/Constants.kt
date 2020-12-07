@@ -27,6 +27,8 @@ object Constants {
     const val SELECT: String = "Select"
     const val UN_SELECT: String = "UnSelect"
 
+    const val CREATED_BY: String = "createdBy"
+
     const val PROGEMANAG_PREFERENCES = "ProjemanagPrefs"
     const val FCM_TOKEN_UPDATED = "fcmTokenUpdated"
     const val FCM_TOKEN = "fcmToken"

@@ -5,13 +5,10 @@ import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.intent.Intents
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import androidx.test.rule.ActivityTestRule
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.projemanag.BaseApplication
 import com.projemanag.BaseTest
-import com.projemanag.activities.SignInActivity
 import com.projemanag.activities.SplashActivity
 import com.projemanag.di.ProductionModule
 import com.projemanag.factory.TaskFactory
@@ -20,9 +17,9 @@ import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.factory.BoardFactory
 import com.projemanag.models.factory.IUserFactory
 import com.projemanag.robots.BaseTestRobot
-import com.projemanag.robots.introScreen
-import com.projemanag.robots.signInScreen
-import com.projemanag.robots.splashActivityTestRule
+import com.projemanag.robots.createBoardScreen
+import com.projemanag.robots.listScreen
+import com.projemanag.robots.mainScreen
 import com.projemanag.robots.splashScreen
 import com.projemanag.utils.EspressoIdlingResource
 import dagger.Module
@@ -45,11 +42,32 @@ import javax.inject.Singleton
 @HiltAndroidTest
 @UninstallModules(ProductionModule::class)
 @RunWith(AndroidJUnit4ClassRunner::class)
-class SignInScreenTest() : BaseTest() {
+class ListScreenTest() : BaseTest() {
 
-    var mActivityTestRule = splashActivityTestRule
+    var mActivityTestRule = ActivityScenarioRule(SplashActivity::class.java)
 
     var hiltRule = HiltAndroidRule(this)
+
+    @Before
+    fun setup() {
+        Intents.init()
+        IdlingRegistry.getInstance().register(EspressoIdlingResource().countingIdlingResource)
+//        BaseTestRobot().deleteFakeUser()
+        BaseTestRobot().resetFakeUserData()
+    }
+
+    @After
+    fun teardown() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource().countingIdlingResource)
+        Intents.release()
+    }
+
+    @get:Rule
+    var rule = RuleChain.outerRule(hiltRule).around(mActivityTestRule)
+
+//    @get: Rule
+//    var chain = RuleChain.outerRule(clearPreferencesRule)
+//        .around(clearFilesRule)
 
     @Module
     @InstallIn(ApplicationComponent::class)
@@ -89,7 +107,10 @@ class SignInScreenTest() : BaseTest() {
 
         @Singleton
         @Provides
-        fun provideFirestoreClass(firebaseFirestore: FirebaseFirestore, firebaseAuth: FirebaseAuth): FirestoreClass {
+        fun provideFirestoreClass(
+            firebaseFirestore: FirebaseFirestore,
+            firebaseAuth: FirebaseAuth
+        ): FirestoreClass {
             return FirestoreClass(firebaseFirestore, firebaseAuth)
         }
 
@@ -107,109 +128,41 @@ class SignInScreenTest() : BaseTest() {
 
         @Singleton
         @Provides
-        fun provideUserFactory(firebaseAuth: FirebaseAuth, firebaseFirestore: FirebaseFirestore, firestoreClass: FirestoreClass): IUserFactory {
+        fun provideUserFactory(
+            firebaseAuth: FirebaseAuth,
+            firebaseFirestore: FirebaseFirestore,
+            firestoreClass: FirestoreClass
+        ): IUserFactory {
             return UserFactory(firebaseAuth, firebaseFirestore, firestoreClass)
         }
 
     }
 
-    @Before
-     fun setup() {
-//        Intents.init()
-        IdlingRegistry.getInstance().register(EspressoIdlingResource().countingIdlingResource)
-        BaseTestRobot().registerFakeUser()
-    }
-
-    @After
-     fun teardown() {
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource().countingIdlingResource)
-//        Intents.release()
-    }
-
-    @get:Rule
-    var rule = RuleChain.outerRule(hiltRule).
-    around(mActivityTestRule)
-
-//    @get: Rule
-//    var chain = RuleChain.outerRule(clearPreferencesRule)
-//        .around(clearFilesRule)
-
     @Test
-    fun signInErrorEnterEmail() {
+    fun addList() {
         splashScreen {
-            signOut()
+            signIn()
             waitForSplashScreenIsGone()
-            checkIsUserIsNotLoggedIn()
+            checkIsUserIsLoggedIn()
         }
-        introScreen {
-            tapSignInButton()
-            signInScreenIsSuccessfullyLoaded()
+        mainScreen {
+            tapOnCreateBoardButton()
+            checkIsCreateBoardActivityOpen()
         }
-        signInScreen {
-            enterFakePassword()
-            tapSignInButton()
-            verifyErrorEmail()
+        createBoardScreen {
+            enterFakeNameOfBoard()
+            tapOnCreateButton()
         }
-    }
-    @Test
-    fun signInErrorEnterPassword() {
-        splashScreen {
-            signOut()
-            waitForSplashScreenIsGone()
-            checkIsUserIsNotLoggedIn()
+        mainScreen {
+            tapOnFakeBoard()
         }
-        introScreen {
-            tapSignInButton()
-            signInScreenIsSuccessfullyLoaded()
-        }
-        signInScreen {
-            enterFakeEmailAddress()
-            tapSignInButton()
-            verifyErrorPassword()
-        }
-    }
-
-    @Test
-    fun signInErrorAuthentication() {
-        splashScreen {
-            deleteFakeUser()
-            signOut()
-            waitForSplashScreenIsGone()
-            checkIsUserIsNotLoggedIn()
-        }
-        introScreen {
-            tapSignInButton()
-            signInScreenIsSuccessfullyLoaded()
-        }
-        signInScreen {
-            enterFakeEmailAddress()
-            enterFakePassword()
-            tapSignInButton()
-            verifyErrorAuthentication()
-        }
-    }
-
-    // TODO Doesn't work as expacted
-    // I don't know why byt with production injection It's all right
-    // But after injection of module above Dialog can't load
-    @Test
-    fun signInSuccess() {
-        splashScreen {
-
-            signOut()
-            waitForSplashScreenIsGone()
-            checkIsUserIsNotLoggedIn()
-        }
-        introScreen {
-            tapSignInButton()
-            signInScreenIsSuccessfullyLoaded()
-        }
-
-        signInScreen {
-            enterFakeEmailAddress()
-            enterFakePassword()
-            tapSignInButton()
-            verifyUserIsSignIn()
+        listScreen {
+            tapOnCreateListButton()
+            sleep(5000)
+            enterFakeListName()
+            sleep(5000)
+            tapOnSubmitButtonCreateList(0)
+            sleep(5000)
         }
     }
 }

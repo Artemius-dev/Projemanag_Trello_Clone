@@ -21,6 +21,8 @@ import com.projemanag.utils.EspressoIdlingResource
 import javax.inject.Inject
 import javax.inject.Singleton
 
+private const val TAG = "FirestoreClass"
+
 open class FirestoreClass
 @Inject
 constructor(val mFireStore: FirebaseFirestore, val mFireStoreAuth: FirebaseAuth) : IFirestoreClass{
@@ -214,6 +216,7 @@ constructor(val mFireStore: FirebaseFirestore, val mFireStoreAuth: FirebaseAuth)
             .addOnSuccessListener { document ->
                 EspressoIdlingResource().decrement()
 
+                Log.d(TAG, "loadUserData: ${document.data}")
                 val loggedInUser = document.toObject(User::class.java)!!
 
                 when (activity) {

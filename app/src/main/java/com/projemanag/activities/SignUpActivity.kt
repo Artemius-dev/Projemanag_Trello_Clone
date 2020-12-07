@@ -38,7 +38,7 @@ class SignUpActivity : BaseActivity() {
         ).show()
         hideProgressDialog()
 
-        FirebaseAuth.getInstance().signOut()
+        firebaseAuth.signOut()
         finish()
     }
 

@@ -126,11 +126,11 @@ class MyProfileActivity : BaseActivity() {
             userHashMap[Constants.IMAGE] = mProfileImageURL
         }
 
-        if (et_name.text.toString() != mUserDetails.name) {
+        if (et_name.text.toString().isNotEmpty() && et_name.text.toString() != mUserDetails.name) {
             userHashMap[Constants.NAME] = et_name.text.toString()
         }
 
-        if (et_mobile.text.toString() != mUserDetails.mobile.toString()) {
+        if (et_mobile.text.toString().isNotEmpty() && et_mobile.text.toString() != mUserDetails.mobile.toString()) {
             userHashMap[Constants.MOBILE] = et_mobile.text.toString().toLong()
         }
 

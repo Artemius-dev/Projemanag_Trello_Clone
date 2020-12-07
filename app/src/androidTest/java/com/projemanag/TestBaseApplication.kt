@@ -30,11 +30,3 @@ interface TestBaseApplication {}
 //            .build()
 //}
 //
-@DefineComponent(parent = ActivityRetainedComponent::class)
-interface MyCustomComponent
-
-@DefineComponent.Builder
-interface MyCustomComponentBuilder {
-//    fun fooSeedData(@BindsInstance Foo foo): MyCustomComponentBuilder
-    fun build(): MyCustomComponent
-}

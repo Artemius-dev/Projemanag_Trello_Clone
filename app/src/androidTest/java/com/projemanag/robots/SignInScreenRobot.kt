@@ -28,6 +28,8 @@ import com.projemanag.conditionwatcher.ConditionWatchers.waitForElement
 import com.projemanag.conditionwatcher.ConditionWatchers.waitForElementFullyVisible
 import com.projemanag.conditionwatcher.ConditionWatchers.waitForElementIsGone
 import com.projemanag.matchers.ToastMatcher
+import com.projemanag.testHelpers.TestConstants.EMAIL
+import com.projemanag.testHelpers.TestConstants.PASSWORD
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
@@ -90,11 +92,12 @@ class SignInScreenRobot : BaseTestRobot() {
     }
 
     fun tapSignInButton() {
-        waitForElementFullyVisible(onView(withId(R.id.btn_sign_in)), 10000).perform(click())
+        onView(withId(R.id.btn_sign_in)).perform(click())
     }
 
     fun verifyUserIsSignIn() {
         waitForElementIsGone(onView(withId(R.id.btn_sign_in)), 10000)
+        waitForElement(onView(withText(R.string.no_boards_are_available)))
         intended(hasComponent(MainActivity::class.java.name))
         // Commented this because Espresso record all the intents and times(0) means that
         // intent was launched 0 times. In my scenario I'm trying to check whether intent
@@ -102,9 +105,30 @@ class SignInScreenRobot : BaseTestRobot() {
 //        intended(hasComponent(SignInActivity::class.java.name), times(0))
     }
 
-    fun verifyErrorOccur() {
+    fun verifyErrorEmail() {
         waitForElement(
             onView(withId(com.google.android.material.R.id.snackbar_text))
-                .check(matches(withText(startsWith("Please")))))
+                .check(matches(withText(context.resources.getString(R.string.please_enter_an_email))))
+        )
+    }
+
+    fun verifyErrorPassword() {
+        waitForElement(
+            onView(withId(com.google.android.material.R.id.snackbar_text))
+                .check(matches(withText(context.resources.getString(R.string.please_enter_a_password))))
+        )
+    }
+
+    fun verifyErrorAuthentication() {
+
+        onView(
+            withText(
+                context.resources.getString(R.string.authentication_error)
+            )
+        )
+            .inRoot(ToastMatcher())
+            .check(
+                matches(isDisplayed())
+            )
     }
 }

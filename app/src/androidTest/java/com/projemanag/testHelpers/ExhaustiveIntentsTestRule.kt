@@ -10,9 +10,16 @@ class ExhaustiveIntentsTestRule<T : Activity> : ActivityTestRule<T> {
 
     constructor(activityClass: Class<T>) : super(activityClass)
 
-    constructor(activityClass: Class<T>, initialTouchMode: Boolean) : super(activityClass, initialTouchMode)
+    constructor(activityClass: Class<T>, initialTouchMode: Boolean) : super(
+        activityClass,
+        initialTouchMode
+    )
 
-    constructor(activityClass: Class<T>, initialTouchMode: Boolean, launchActivity: Boolean) : super(
+    constructor(
+        activityClass: Class<T>,
+        initialTouchMode: Boolean,
+        launchActivity: Boolean
+    ) : super(
         activityClass,
         initialTouchMode,
         launchActivity
@@ -26,10 +33,8 @@ class ExhaustiveIntentsTestRule<T : Activity> : ActivityTestRule<T> {
 
     override fun afterActivityFinished() {
         super.afterActivityFinished()
-        if (isInitialized) {
-            // Otherwise will throw a NPE if Intents.init() wasn't called.
-            Intents.release()
-            isInitialized = false
-        }
+        // Otherwise will throw a NPE if Intents.init() wasn't called.
+        Intents.release()
+        isInitialized = false
     }
 }

@@ -15,15 +15,16 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 @Module
 @InstallIn(ApplicationComponent::class)
 open class ProductionModule() {
 
-//    @Provides
-//    @Singleton
-//    open fun provideContext(): Context = app
+    @Provides
+    @Singleton
+    fun provideContext(@ApplicationContext appContext: Context): Context = appContext
 
     @Singleton
     @Provides

@@ -20,16 +20,12 @@ import javax.inject.Inject
 //@AndroidEntryPoint
 class SignInActivity : BaseActivity() {
 
-    lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
         setupActionBar()
 
 //        auth = Firebase.auth
-
-        auth = firebaseAuth
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -67,20 +63,20 @@ class SignInActivity : BaseActivity() {
 
         if (validateForm(email, password)) {
             showProgressDialog(resources.getString(R.string.please_wait))
-            auth.signInWithEmailAndPassword(email, password)
+            firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     hideProgressDialog()
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("Sign in", "signInWithEmail:success")
-                        val user = auth.currentUser
+                        val user = firebaseAuth.currentUser
                         firestoreClass.loadUserData(this)
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("Sign in", "signInWithEmail:failure", task.exception)
                         Toast.makeText(
                             baseContext,
-                            "Authentication failed.",
+                            resources.getString(R.string.authentication_error),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

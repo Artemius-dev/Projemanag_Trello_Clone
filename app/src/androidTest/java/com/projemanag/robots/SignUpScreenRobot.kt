@@ -14,6 +14,9 @@ import com.projemanag.R
 import com.projemanag.conditionwatcher.ConditionWatchers.waitForElement
 import com.projemanag.conditionwatcher.ConditionWatchers.waitForElementFullyVisible
 import com.projemanag.matchers.ToastMatcher
+import com.projemanag.testHelpers.TestConstants.EMAIL
+import com.projemanag.testHelpers.TestConstants.NAME
+import com.projemanag.testHelpers.TestConstants.PASSWORD
 import org.hamcrest.CoreMatchers.startsWith
 import java.lang.Exception
 

@@ -69,5 +69,9 @@
     <string name="please_enter_a_name">Please enter a name</string>
     <string name="please_enter_an_email">Please enter an email</string>
     <string name="please_enter_a_password">Please enter a password</string>
+    <string name="authentication_error">Authentication failed.</string>
+    <string name="please_enter_another_name_for_a_board">Try another name for a board</string>
+    <string name="board_name_is_already_taken">Such name is already taken. Try another</string>
+    <string name="board_name_is_blank">Please enter a name of a board</string>
 
 </resources>

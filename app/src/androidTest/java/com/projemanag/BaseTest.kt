@@ -1,6 +1,7 @@
 package com.projemanag
 
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.intent.Intents
 import com.projemanag.utils.EspressoIdlingResource
 import com.schibsted.spain.barista.rule.cleardata.ClearDatabaseRule
 import com.schibsted.spain.barista.rule.cleardata.ClearFilesRule
@@ -18,30 +19,26 @@ abstract class BaseTest {
 //        component.inject(this)
     }
 
-    @Before
-    open fun setup() {
-        IdlingRegistry.getInstance().register(EspressoIdlingResource().countingIdlingResource)
-    }
 
-    @After
-    open fun teardown() {
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource().countingIdlingResource)
-    }
+//    @Before
+//    open fun setup() {
+//        IdlingRegistry.getInstance().register(EspressoIdlingResource().countingIdlingResource)
+//        Intents.init()
+//    }
+//
+//    @After
+//    open fun teardown() {
+//        Intents.release()
+//        IdlingRegistry.getInstance().unregister(EspressoIdlingResource().countingIdlingResource)
+//    }
 
-    @get: Rule
+//    @get: Rule
     var clearPreferencesRule = ClearPreferencesRule()
 
-    @get: Rule
+//    @get: Rule
     var clearDatabaseRule = ClearDatabaseRule()
 
-    @get: Rule
+//    @get: Rule
     var clearFilesRule = ClearFilesRule()
-
-
-
-    companion object {
-        const val EMAIL = "antonio@gmail.com"
-        const val PASSWORD = "123456"
-    }
 
 }

@@ -3,11 +3,13 @@ package com.projemanag.activities
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.projemanag.R
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.factory.BoardFactory
@@ -32,6 +34,9 @@ open class BaseActivity : AppCompatActivity() {
     lateinit var firebaseAuth: FirebaseAuth
 
     @Inject
+    lateinit var firebaseFirestore: FirebaseFirestore
+
+    @Inject
     lateinit var firestoreClass: FirestoreClass
 
     @Inject
@@ -47,6 +52,8 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
 
+//        mProgressDialog = Dialog(this)
+
 //        val component = DaggerAppComponent.builder().productionModule(ProductionModule(BaseApplication())).build()
 //
 //        component.inject(this)
@@ -54,6 +61,8 @@ open class BaseActivity : AppCompatActivity() {
 
     fun showProgressDialog(text: String) {
         mProgressDialog = Dialog(this)
+
+        Log.d(TAG, "showProgressDialog: $mProgressDialog")
 
         /* Set the screen content from a layout resource.
         The resource will be inflated, adding all top-level views to the screen.
@@ -67,7 +76,11 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun hideProgressDialog() {
-        mProgressDialog.dismiss()
+        Log.d(TAG, "showProgressDialog Hide: $mProgressDialog")
+
+        if (mProgressDialog.isShowing) {
+            mProgressDialog.dismiss()
+        }
     }
 
     fun doubleBackToExit() {

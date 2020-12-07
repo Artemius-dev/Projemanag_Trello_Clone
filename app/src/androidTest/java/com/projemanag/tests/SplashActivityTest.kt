@@ -1,17 +1,26 @@
 package com.projemanag.tests
 
 import android.content.Context
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.intent.Intents
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.projemanag.BaseTest
+import com.projemanag.activities.SplashActivity
 import com.projemanag.di.ProductionModule
 import com.projemanag.factory.TaskFactory
 import com.projemanag.factory.UserFactory
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.factory.IUserFactory
+import com.projemanag.robots.BaseTestRobot
+import com.projemanag.robots.introScreen
+import com.projemanag.robots.signInScreen
 import com.projemanag.robots.splashActivityTestRule
 import com.projemanag.robots.splashScreen
+import com.projemanag.utils.EspressoIdlingResource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,33 +29,19 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
+import java.lang.Thread.sleep
 import javax.inject.Singleton
 
 @HiltAndroidTest
 @UninstallModules(ProductionModule::class)
 @RunWith(AndroidJUnit4ClassRunner::class)
-//@Config(application = HiltTestApplication::class)
-class SplashActivityTest {
-
-//    @Inject
-//    lateinit var firebaseAuth: FirebaseAuth
-//
-//    @Inject
-//    lateinit var userFactory: UserFactory
-
-    @Before
-    fun setup() {
-//        var component =
-//            DaggerTestAppComponent.builder().testModule(TestModule(TestBaseApplication())).build()
-//
-//        component.inject(this)
-
-    }
+class SplashActivityTest : BaseTest() {
 
     @Module
     @InstallIn(ApplicationComponent::class)
@@ -104,34 +99,61 @@ class SplashActivityTest {
 
     }
 
+    val activityRule = ActivityScenarioRule(SplashActivity::class.java)
 
-
-//    @get:Rule(order = 1)
-    val activityRule = splashActivityTestRule
-
-//    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
     @get:Rule
     var rule = RuleChain.outerRule(hiltRule).
     around(activityRule)
 
+    @Before
+     fun setup() {
+        IdlingRegistry.getInstance().register(EspressoIdlingResource().countingIdlingResource)
+        Intents.init()
+    }
+
+    @After
+     fun teardown() {
+        Intents.release()
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource().countingIdlingResource)
+    }
+
     @Test
-    fun shouldOpenHomeActivityWhenUserIsAuthenticated() {
+    fun shouldOpenMainActivityWhenUserIsAuthenticated() {
         splashScreen {
-//            signIn()
-            signOut()
+            signIn()
             waitForSplashScreenIsGone()
             checkIsUserIsLoggedIn()
         }
     }
 
     @Test
-    fun shouldOpenLoginActivityWhenUserIsNotAuthenticated() {
+    fun shouldOpenIntroActivityWhenUserIsNotAuthenticated() {
         splashScreen {
             signOut()
             waitForSplashScreenIsGone()
             checkIsUserIsNotLoggedIn()
+        }
+    }
+
+    @Test
+    fun signInSuccess() {
+        splashScreen {
+            signOut()
+            waitForSplashScreenIsGone()
+            checkIsUserIsNotLoggedIn()
+        }
+        introScreen {
+            tapSignInButton()
+            signInScreenIsSuccessfullyLoaded()
+        }
+
+        signInScreen {
+            enterFakeEmailAddress()
+            enterFakePassword()
+            tapSignInButton()
+            verifyUserIsSignIn()
         }
     }
 

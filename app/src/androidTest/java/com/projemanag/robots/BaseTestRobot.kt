@@ -1,45 +1,53 @@
 package com.projemanag.robots
 
 import android.content.Context
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withHint
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSpinnerText
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.agoda.kakao.common.views.KView
 import com.agoda.kakao.edit.KEditText
+import com.google.android.material.R
 import com.google.firebase.auth.FirebaseAuth
-import com.projemanag.MyCustomComponentBuilder
-import com.projemanag.TestBaseApplication
-import com.projemanag.TestBaseApplication_Application
+import com.projemanag.Hilt_BaseApplication
 import com.projemanag.factory.UserFactory
+import com.projemanag.matchers.ToastMatcher
+import com.projemanag.testHelpers.TestConstants.EMAIL
+import com.projemanag.testHelpers.TestConstants.PASSWORD
 import com.projemanag.utils.Constants
 import com.projemanag.utils.EspressoIdlingResource
 import dagger.hilt.EntryPoint
 import dagger.hilt.EntryPoints
 import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.internal.managers.ApplicationComponentManager
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
+import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.startsWith
 import org.junit.Rule
+import java.lang.Exception
 import javax.inject.Inject
 
 //@HiltAndroidTest
-open class BaseTestRobot
-@Inject
-constructor(
-    val componentBuilder: MyCustomComponentBuilder
-){
-
-    constructor()
+open class BaseTestRobot {
 
 //    @get: Rule
 //    val hiltRule = HiltAndroidRule(this)
 
-    var userFactory: UserFactory
+   lateinit var userFactory: UserFactory
 
-    var firebaseAuth: FirebaseAuth
+    lateinit var firebaseAuth: FirebaseAuth
 
     var context: Context = InstrumentationRegistry.getInstrumentation().targetContext
 
@@ -51,21 +59,34 @@ constructor(
         fun getUserFactory(): UserFactory
     }
 
+    private fun setUserFactory() : UserFactory {
+        val hiltEntryPoint : MyClassInterface = EntryPointAccessors.fromApplication(context, MyClassInterface::class.java)
+
+        return hiltEntryPoint.getUserFactory()
+    }
+
+    private fun setFirebaseAuth(): FirebaseAuth {
+        val hiltEntryPoint : MyClassInterface = EntryPointAccessors.fromApplication(context, MyClassInterface::class.java)
+
+        return hiltEntryPoint.getFirebaseAuth()
+    }
     init {
 //        val component = TestBaseApplication_Application.builder()
 //
 //        component.inject(this)
+//
+//
+//        val myClassInterface =
+//            EntryPoints.get(component, MyClassInterface::class.java)
+//        userFactory = myClassInterface.getUserFactory()
+//        firebaseAuth = myClassInterface.getFirebaseAuth()
 
-        val component = componentBuilder.build()
+        userFactory = setUserFactory()
 
-        val myClassInterface =
-            EntryPoints.get(component, MyClassInterface::class.java)
-        userFactory = myClassInterface.getUserFactory()
-        firebaseAuth = myClassInterface.getFirebaseAuth()
+        firebaseAuth = setFirebaseAuth()
     }
 
     fun signIn() {
-        userFactory.registerFakeUser()
         firebaseAuth.signInWithEmailAndPassword(
             EMAIL,
             PASSWORD
@@ -86,6 +107,10 @@ constructor(
 
     fun deleteFakeUser() {
         userFactory.deleteFakeUser()
+    }
+
+    fun resetFakeUserData() {
+        userFactory.resetFakeUserData()
     }
 
     fun enterText(viewId: Int, text: String) {
@@ -179,11 +204,5 @@ constructor(
 //            RecyclerViewMatchers.withItemCount(itemCount)
 //        }
 //    }
-
-    companion object {
-        const val EMAIL = "antonio@gmail.com"
-        const val PASSWORD = "123456"
-        const val NAME = "Antonio Berluskoni"
-    }
 
 }
