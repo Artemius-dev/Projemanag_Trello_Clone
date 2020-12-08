@@ -16,10 +16,6 @@ import com.projemanag.factory.UserFactory
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.factory.IUserFactory
 import com.projemanag.robots.BaseTestRobot
-import com.projemanag.robots.introScreen
-import com.projemanag.robots.signInScreen
-import com.projemanag.robots.splashActivityTestRule
-import com.projemanag.robots.splashScreen
 import com.projemanag.utils.EspressoIdlingResource
 import dagger.Module
 import dagger.Provides
@@ -35,13 +31,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
-import java.lang.Thread.sleep
 import javax.inject.Singleton
 
 @HiltAndroidTest
 @UninstallModules(ProductionModule::class)
 @RunWith(AndroidJUnit4ClassRunner::class)
-class SplashActivityTest : BaseTest() {
+class MembersScreenTest : BaseTest() {
 
     @Module
     @InstallIn(ApplicationComponent::class)
@@ -81,7 +76,10 @@ class SplashActivityTest : BaseTest() {
 
         @Singleton
         @Provides
-        fun provideFirestoreClass(firebaseFirestore: FirebaseFirestore, firebaseAuth: FirebaseAuth): FirestoreClass {
+        fun provideFirestoreClass(
+            firebaseFirestore: FirebaseFirestore,
+            firebaseAuth: FirebaseAuth
+        ): FirestoreClass {
             return FirestoreClass(firebaseFirestore, firebaseAuth)
         }
 
@@ -93,7 +91,11 @@ class SplashActivityTest : BaseTest() {
 
         @Singleton
         @Provides
-        fun provideUserFactory(firebaseAuth: FirebaseAuth, firebaseFirestore: FirebaseFirestore, firestoreClass: FirestoreClass): IUserFactory {
+        fun provideUserFactory(
+            firebaseAuth: FirebaseAuth,
+            firebaseFirestore: FirebaseFirestore,
+            firestoreClass: FirestoreClass
+        ): IUserFactory {
             return UserFactory(firebaseAuth, firebaseFirestore, firestoreClass)
         }
 
@@ -104,38 +106,23 @@ class SplashActivityTest : BaseTest() {
     var hiltRule = HiltAndroidRule(this)
 
     @get:Rule
-    var rule = RuleChain.outerRule(hiltRule).
-    around(activityRule)
+    var rule = RuleChain.outerRule(hiltRule).around(activityRule)
 
     @Before
-     fun setup() {
+    fun setup() {
         IdlingRegistry.getInstance().register(EspressoIdlingResource().countingIdlingResource)
         Intents.init()
         BaseTestRobot().resetFakeUserData()
     }
 
     @After
-     fun teardown() {
+    fun teardown() {
         Intents.release()
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource().countingIdlingResource)
     }
 
     @Test
-    fun shouldOpenMainActivityWhenUserIsAuthenticated() {
-        splashScreen {
-            signIn()
-            waitForSplashScreenIsGone()
-            checkIsUserIsLoggedIn()
-        }
-    }
+    fun verifyMemberWasAddedToTheBoard() {
 
-    @Test
-    fun shouldOpenIntroActivityWhenUserIsNotAuthenticated() {
-        splashScreen {
-            signOut()
-            waitForSplashScreenIsGone()
-            checkIsUserIsNotLoggedIn()
-        }
     }
-
 }

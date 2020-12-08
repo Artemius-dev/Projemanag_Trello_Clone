@@ -1,8 +1,6 @@
 package com.projemanag.robots
 
-import android.util.Log
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
@@ -14,9 +12,9 @@ import com.projemanag.R
 import com.projemanag.conditionwatcher.ConditionWatchers.waitForElement
 import com.projemanag.conditionwatcher.ConditionWatchers.waitForElementFullyVisible
 import com.projemanag.matchers.ToastMatcher
-import com.projemanag.testHelpers.TestConstants.EMAIL
-import com.projemanag.testHelpers.TestConstants.NAME
-import com.projemanag.testHelpers.TestConstants.PASSWORD
+import com.projemanag.testHelpers.TestConstants.MAIN_USER_EMAIL
+import com.projemanag.testHelpers.TestConstants.MAIN_USER_NAME
+import com.projemanag.testHelpers.TestConstants.MAIN_USER_PASSWORD
 import org.hamcrest.CoreMatchers.startsWith
 import java.lang.Exception
 
@@ -62,7 +60,7 @@ class SignUpScreenRobot : BaseTestRobot() {
             10000
         )
             .perform(
-                typeText(NAME),
+                typeText(MAIN_USER_NAME),
                 closeSoftKeyboard()
             )
     }
@@ -88,7 +86,7 @@ class SignUpScreenRobot : BaseTestRobot() {
             10000
         )
             .perform(
-                typeText(EMAIL),
+                typeText(MAIN_USER_EMAIL),
                 closeSoftKeyboard()
             )
     }
@@ -114,7 +112,7 @@ class SignUpScreenRobot : BaseTestRobot() {
             10000
         )
             .perform(
-                typeText(PASSWORD),
+                typeText(MAIN_USER_PASSWORD),
                 closeSoftKeyboard()
             )
     }

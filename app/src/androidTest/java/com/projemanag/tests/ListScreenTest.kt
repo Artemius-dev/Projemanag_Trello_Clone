@@ -20,6 +20,7 @@ import com.projemanag.robots.BaseTestRobot
 import com.projemanag.robots.createBoardScreen
 import com.projemanag.robots.listScreen
 import com.projemanag.robots.mainScreen
+import com.projemanag.robots.membersListScreen
 import com.projemanag.robots.splashScreen
 import com.projemanag.utils.EspressoIdlingResource
 import dagger.Module
@@ -53,7 +54,12 @@ class ListScreenTest() : BaseTest() {
         Intents.init()
         IdlingRegistry.getInstance().register(EspressoIdlingResource().countingIdlingResource)
 //        BaseTestRobot().deleteFakeUser()
+//        BaseTestRobot().registerFakeUser()
+//        sleep(5000)
+//        BaseTestRobot().registerSecondFakeUser()
+
         BaseTestRobot().resetFakeUserData()
+        sleep(2000)
     }
 
     @After
@@ -158,11 +164,138 @@ class ListScreenTest() : BaseTest() {
         }
         listScreen {
             tapOnCreateListButton()
-            sleep(5000)
             enterFakeListName()
-            sleep(5000)
-            tapOnSubmitButtonCreateList(0)
-            sleep(5000)
+            tapOnSubmitButtonCreateList()
+            checkNameOfFakeList()
         }
+    }
+
+    @Test
+    fun addListThenAddCard() {
+        splashScreen {
+            signIn()
+            waitForSplashScreenIsGone()
+            checkIsUserIsLoggedIn()
+        }
+        mainScreen {
+            tapOnCreateBoardButton()
+            checkIsCreateBoardActivityOpen()
+        }
+        createBoardScreen {
+            enterFakeNameOfBoard()
+            tapOnCreateButton()
+        }
+        mainScreen {
+            tapOnFakeBoard()
+        }
+        listScreen {
+            tapOnCreateListButton()
+            enterFakeListName()
+            tapOnSubmitButtonCreateList()
+            checkNameOfFakeList()
+            tapOnCreateCardButton()
+            enterCardName()
+            tapOnDoneCreateCardButton()
+            checkFakeCardCreated()
+        }
+    }
+
+    @Test
+    fun verifyCardDetailsWasShow() {
+        splashScreen {
+            signIn()
+            waitForSplashScreenIsGone()
+            checkIsUserIsLoggedIn()
+        }
+        mainScreen {
+            tapOnCreateBoardButton()
+            checkIsCreateBoardActivityOpen()
+        }
+        createBoardScreen {
+            enterFakeNameOfBoard()
+            tapOnCreateButton()
+        }
+        mainScreen {
+            tapOnFakeBoard()
+        }
+        listScreen {
+            tapOnCreateListButton()
+            enterFakeListName()
+            tapOnSubmitButtonCreateList()
+            checkNameOfFakeList()
+            tapOnCreateCardButton()
+            enterCardName()
+            tapOnDoneCreateCardButton()
+            checkFakeCardCreated()
+            tapOnFakeCard()
+            checkCardDetailsActivityShow()
+        }
+    }
+
+    @Test
+    fun verifyOnBackPressedButton() {
+        splashScreen {
+            signIn()
+            waitForSplashScreenIsGone()
+            checkIsUserIsLoggedIn()
+        }
+        mainScreen {
+            tapOnCreateBoardButton()
+            checkIsCreateBoardActivityOpen()
+        }
+        createBoardScreen {
+            enterFakeNameOfBoard()
+            tapOnCreateButton()
+        }
+        mainScreen {
+            tapOnFakeBoard()
+        }
+        listScreen {
+            tapOnBackButton()
+        }
+        mainScreen {
+            checkMainActivityAfterUserLeaveFromListActivity()
+        }
+    }
+
+    @Test
+    fun verifyMembersActivityWasShow() {
+        splashScreen {
+            signIn()
+            waitForSplashScreenIsGone()
+            checkIsUserIsLoggedIn()
+        }
+        mainScreen {
+            tapOnCreateBoardButton()
+            checkIsCreateBoardActivityOpen()
+        }
+        createBoardScreen {
+            enterFakeNameOfBoard()
+            tapOnCreateButton()
+        }
+        mainScreen {
+            tapOnFakeBoard()
+        }
+        listScreen {
+            tapOnAddMembers()
+        }
+        membersListScreen {
+            checkIsMembersActivityOpen()
+            openAddMemberMenu()
+            verifySearchMemberMenuVisible()
+            enterInSearchFieldSecondFakeUser()
+            tapOnAddMemberButton()
+            checkMemberIsAdded()
+        }
+    }
+
+    @Test
+    fun verifyEditListTitleFunctions() {
+
+    }
+
+    @Test
+    fun verifyDeleteListFunctions() {
+
     }
 }

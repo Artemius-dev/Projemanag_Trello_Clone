@@ -1,39 +1,24 @@
 package com.projemanag.robots
 
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.Intents.times
-import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
-import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.projemanag.BaseTest
 import com.projemanag.R
-import com.projemanag.activities.IntroActivity
 import com.projemanag.activities.MainActivity
-import com.projemanag.activities.SignInActivity
-import com.projemanag.conditionwatcher.ConditionWatchers
 import com.projemanag.conditionwatcher.ConditionWatchers.waitForElement
 import com.projemanag.conditionwatcher.ConditionWatchers.waitForElementFullyVisible
 import com.projemanag.conditionwatcher.ConditionWatchers.waitForElementIsGone
 import com.projemanag.matchers.ToastMatcher
-import com.projemanag.testHelpers.TestConstants.EMAIL
-import com.projemanag.testHelpers.TestConstants.PASSWORD
-import org.hamcrest.CoreMatchers
-import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.CoreMatchers.not
-import org.hamcrest.CoreMatchers.startsWith
+import com.projemanag.testHelpers.TestConstants.MAIN_USER_EMAIL
+import com.projemanag.testHelpers.TestConstants.MAIN_USER_PASSWORD
 
 fun signInScreen(func: SignInScreenRobot.() -> Unit) = SignInScreenRobot().apply { func() }
 
@@ -60,7 +45,7 @@ class SignInScreenRobot : BaseTestRobot() {
             10000
         )
             .perform(
-                typeText(EMAIL),
+                typeText(MAIN_USER_EMAIL),
                 closeSoftKeyboard()
             )
     }
@@ -86,7 +71,7 @@ class SignInScreenRobot : BaseTestRobot() {
             10000
         )
             .perform(
-                typeText(PASSWORD),
+                typeText(MAIN_USER_PASSWORD),
                 closeSoftKeyboard()
             )
     }

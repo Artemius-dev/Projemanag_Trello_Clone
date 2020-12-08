@@ -1,43 +1,21 @@
 package com.projemanag.robots
 
 import android.content.Context
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withHint
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSpinnerText
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.agoda.kakao.common.views.KView
 import com.agoda.kakao.edit.KEditText
-import com.google.android.material.R
 import com.google.firebase.auth.FirebaseAuth
-import com.projemanag.Hilt_BaseApplication
 import com.projemanag.factory.UserFactory
-import com.projemanag.matchers.ToastMatcher
-import com.projemanag.testHelpers.TestConstants.EMAIL
-import com.projemanag.testHelpers.TestConstants.PASSWORD
-import com.projemanag.utils.Constants
+import com.projemanag.testHelpers.TestConstants.MAIN_USER_EMAIL
+import com.projemanag.testHelpers.TestConstants.MAIN_USER_PASSWORD
 import com.projemanag.utils.EspressoIdlingResource
 import dagger.hilt.EntryPoint
-import dagger.hilt.EntryPoints
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.components.ApplicationComponent
-import dagger.hilt.android.internal.managers.ApplicationComponentManager
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.HiltTestApplication
-import org.hamcrest.CoreMatchers
-import org.hamcrest.CoreMatchers.startsWith
-import org.junit.Rule
-import java.lang.Exception
-import javax.inject.Inject
 
 //@HiltAndroidTest
 open class BaseTestRobot {
@@ -88,8 +66,8 @@ open class BaseTestRobot {
 
     fun signIn() {
         firebaseAuth.signInWithEmailAndPassword(
-            EMAIL,
-            PASSWORD
+            MAIN_USER_EMAIL,
+            MAIN_USER_PASSWORD
         )
     }
 
@@ -102,7 +80,11 @@ open class BaseTestRobot {
     }
 
     fun registerFakeUser() {
-        userFactory.registerFakeUser()
+        userFactory.registerFakeUserMain()
+    }
+
+    fun registerSecondFakeUser() {
+        userFactory.registerFakeUserSecond()
     }
 
     fun deleteFakeUser() {
@@ -110,7 +92,7 @@ open class BaseTestRobot {
     }
 
     fun resetFakeUserData() {
-        userFactory.resetFakeUserData()
+        userFactory.resetFakeUsersData()
     }
 
     fun enterText(viewId: Int, text: String) {

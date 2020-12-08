@@ -3,7 +3,6 @@ package com.projemanag.factory
 import android.app.Activity
 import android.util.Log
 import android.widget.Toast
-import androidx.test.core.app.ActivityScenario.launch
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -12,22 +11,14 @@ import com.projemanag.activities.SignUpActivity
 import com.projemanag.firebase.FirestoreClass
 import com.projemanag.models.User
 import com.projemanag.models.factory.IUserFactory
-import com.projemanag.models.factory.UserFactory
 import com.projemanag.testHelpers.TestConstants
-import com.projemanag.testHelpers.TestConstants.EMAIL
-import com.projemanag.testHelpers.TestConstants.PASSWORD
+import com.projemanag.testHelpers.TestConstants.MAIN_USER_EMAIL
+import com.projemanag.testHelpers.TestConstants.MAIN_USER_PASSWORD
+import com.projemanag.testHelpers.TestConstants.SECOND_USER_EMAIL
+import com.projemanag.testHelpers.TestConstants.SECOND_USER_PASSWORD
 import com.projemanag.utils.Constants
 import com.projemanag.utils.EspressoIdlingResource
-import com.projemanag.utils.await
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.lang.Exception
-import java.lang.Thread.sleep
-import java.util.Random
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -61,16 +52,16 @@ constructor(
             }
     }
 
-    fun registerFakeUser() {
+    fun registerFakeUserMain() {
         EspressoIdlingResource().increment()
-        firebaseAuth.createUserWithEmailAndPassword(EMAIL, PASSWORD)
+        firebaseAuth.createUserWithEmailAndPassword(MAIN_USER_EMAIL, MAIN_USER_PASSWORD)
             .addOnCompleteListener { task ->
                 Log.d(TAG, "registerFakeUser: ${task.isSuccessful}")
                 if (task.isSuccessful) {
                     val firebaseUser: FirebaseUser = task.result!!.user!!
                     val registeredEmail = firebaseUser.email!!
                     val userInfo =
-                        User(firebaseUser.uid, TestConstants.NAME, registeredEmail)
+                        User(firebaseUser.uid, TestConstants.MAIN_USER_NAME, registeredEmail)
 
                     EspressoIdlingResource().increment()
 
@@ -93,6 +84,39 @@ constructor(
                 EspressoIdlingResource().decrement()
             }
 
+    }
+
+    fun registerFakeUserSecond() {
+        EspressoIdlingResource().increment()
+        firebaseAuth.createUserWithEmailAndPassword(SECOND_USER_EMAIL, SECOND_USER_PASSWORD)
+            .addOnCompleteListener { task ->
+                Log.d(TAG, "registerFakeUser: ${task.isSuccessful}")
+                if (task.isSuccessful) {
+                    val firebaseUser: FirebaseUser = task.result!!.user!!
+                    val registeredEmail = firebaseUser.email!!
+                    val userInfo =
+                        User(firebaseUser.uid, TestConstants.SECOND_USER_NAME, registeredEmail)
+
+                    EspressoIdlingResource().increment()
+
+                    firebaseFirestore.collection(Constants.USERS)
+                        .document(firebaseUser.uid)
+                        .set(userInfo, SetOptions.merge())
+                        .addOnSuccessListener {
+                            Log.d(TAG, "registerFakeUser: Success")
+                        }
+                        .addOnFailureListener {
+                            Log.d(TAG, "registerFakeUser: ", it)
+                        }
+
+                    EspressoIdlingResource().decrement()
+                }
+                EspressoIdlingResource().increment()
+
+                firebaseAuth.signOut()
+
+                EspressoIdlingResource().decrement()
+            }
     }
 
     fun getFakeUserUID(email: String, password: String): String {
@@ -123,7 +147,7 @@ constructor(
         var fakeUserUID = ""
 
         // TODO Implement Coroutines andd add this to separate method
-        firebaseAuth.signInWithEmailAndPassword(EMAIL, PASSWORD).addOnCompleteListener {
+        firebaseAuth.signInWithEmailAndPassword(MAIN_USER_EMAIL, MAIN_USER_PASSWORD).addOnCompleteListener {
 
             var currentUser = firebaseAuth.currentUser
 
@@ -142,7 +166,7 @@ constructor(
 
         Log.d(TAG, "fakeUserUID: ${fakeUserUID}")
 
-        firebaseAuth.signInWithEmailAndPassword(EMAIL, PASSWORD).addOnCompleteListener { task ->
+        firebaseAuth.signInWithEmailAndPassword(MAIN_USER_EMAIL, MAIN_USER_PASSWORD).addOnCompleteListener { task ->
             Log.d(TAG, "deleteFakeUser: ${fakeUserUID}; ${task.isSuccessful}")
             if (task.isSuccessful) {
                 try {
@@ -174,11 +198,11 @@ constructor(
         return currentUserId
     }
 
-    fun resetFakeUserData() {
+    fun resetFakeUsersData() {
 
         val userHashMap = HashMap<String, Any>()
-        userHashMap[Constants.NAME] = TestConstants.NAME
-        firebaseAuth.signInWithEmailAndPassword(EMAIL, PASSWORD).addOnCompleteListener {
+        userHashMap[Constants.NAME] = TestConstants.MAIN_USER_NAME
+        firebaseAuth.signInWithEmailAndPassword(MAIN_USER_EMAIL, MAIN_USER_PASSWORD).addOnCompleteListener {
 
             firebaseAuth.uid?.let { it1 -> firebaseFirestore.collection(Constants.USERS).document(it1).update(userHashMap) }
 
@@ -188,7 +212,7 @@ constructor(
             Log.d(TAG, "User Updated: Success ")
         }
 
-        firebaseFirestore.collection(Constants.BOARDS).whereEqualTo(Constants.CREATED_BY, TestConstants.NAME).get().addOnSuccessListener {
+        firebaseFirestore.collection(Constants.BOARDS).whereEqualTo(Constants.CREATED_BY, TestConstants.MAIN_USER_NAME).get().addOnSuccessListener {
             querySnapshot ->
             val listOfDocuments = querySnapshot.documents
             for(document in listOfDocuments) {
@@ -197,6 +221,31 @@ constructor(
         }
 
         firebaseAuth.signOut()
+
+        firebaseAuth.createUserWithEmailAndPassword(SECOND_USER_EMAIL, SECOND_USER_PASSWORD)
+            .addOnCompleteListener { task ->
+                Log.d(TAG, "registerFakeUser: ${task.isSuccessful}")
+                if (task.isSuccessful) {
+                    val firebaseUser: FirebaseUser = task.result!!.user!!
+                    val registeredEmail = firebaseUser.email!!
+                    val userInfo =
+                        User(firebaseUser.uid, TestConstants.SECOND_USER_NAME, registeredEmail)
+
+                    EspressoIdlingResource().increment()
+
+                    firebaseFirestore.collection(Constants.USERS)
+                        .document(firebaseUser.uid)
+                        .set(userInfo, SetOptions.merge())
+                        .addOnSuccessListener {
+                            Log.d(TAG, "registerFakeUser: Success")
+                        }
+                        .addOnFailureListener {
+                            Log.d(TAG, "registerFakeUser: ", it)
+                        }
+
+                    EspressoIdlingResource().decrement()
+                }
+            }
 
     }
 }

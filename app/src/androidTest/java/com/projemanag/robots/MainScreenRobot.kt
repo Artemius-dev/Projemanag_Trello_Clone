@@ -3,15 +3,18 @@ package com.projemanag.robots
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.times
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.intent.matcher.IntentMatchers.anyIntent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withChild
@@ -60,6 +63,9 @@ class MainScreenRobot : BaseTestRobot() {
     fun checkMyProfileActivityShowAgain() {
         intended(hasComponent(MyProfileActivity::class.java.name), times(2))
     }
+    fun checkMainActivityAfterUserLeaveFromListActivity() {
+        intended(hasComponent(MainActivity::class.java.name), times(1))
+    }
 
     fun checkIsCreateBoardActivityOpen() {
         intended(hasComponent(CreateBoardActivity::class.java.name))
@@ -86,6 +92,7 @@ class MainScreenRobot : BaseTestRobot() {
     }
 
     fun tapOnFakeBoard() {
-        onView(allOf(withText(TestConstants.FAKE_BOARD_NAME), withId(R.id.tv_name))).perform(click())
+        onView(withId(R.id.rv_boards_list)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+            hasDescendant(withText(TestConstants.FAKE_BOARD_NAME)), click()))
     }
 }
